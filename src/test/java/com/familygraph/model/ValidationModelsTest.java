@@ -61,7 +61,7 @@ class ValidationModelsTest {
     }
 
     @Test
-    void onlyDirectedCycleErrorMayContainAClosedCycle() {
+    void keepsCycleEvidenceImmutableForTheOutputLayer() {
         ValidationError cycleError = new ValidationError(
                 ValidationErrorCode.DIRECTED_CYCLE,
                 "",
@@ -69,11 +69,6 @@ class ValidationModelsTest {
         );
 
         assertSame(ValidationErrorCode.DIRECTED_CYCLE, cycleError.code());
-        assertThrows(IllegalArgumentException.class,
-                () -> new ValidationError(
-                        ValidationErrorCode.UNKNOWN_ID,
-                        "P99",
-                        List.of("P01", "P02", "P01")
-                ));
+        assertThrows(UnsupportedOperationException.class, () -> cycleError.cycle().clear());
     }
 }

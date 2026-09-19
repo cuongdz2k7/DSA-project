@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class GraphAndQueryModelsTest {
 
     @Test
-    void normalizesMissingNameToEmptyString() {
+    void keepsRawPersonFieldsForTheInputValidator() {
         Person person = new Person("P01", Gender.UNKNOWN, null);
 
-        assertEquals("", person.name());
+        assertEquals(null, person.name());
     }
 
     @Test
@@ -41,10 +41,12 @@ class GraphAndQueryModelsTest {
     }
 
     @Test
-    void rejectsInvalidQueries() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new FamilyTreeQuery("P01", 0, Direction.ANCESTORS));
-        assertThrows(IllegalArgumentException.class,
-                () -> new CheckRelationshipQuery("P01", "P01"));
+    void keepsQueriesAsDataUntilTheInputValidatorChecksThem() {
+        FamilyTreeQuery treeQuery = new FamilyTreeQuery("P01", 0, Direction.ANCESTORS);
+        CheckRelationshipQuery relationshipQuery = new CheckRelationshipQuery("P01", "P01");
+
+        assertEquals(0, treeQuery.numberOfGenerations());
+        assertEquals("P01", relationshipQuery.firstPersonId());
+        assertEquals("P01", relationshipQuery.secondPersonId());
     }
 }

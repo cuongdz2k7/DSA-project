@@ -1,22 +1,9 @@
 package com.familygraph.model.familytree;
 
-import java.util.Objects;
-
 public record RelationLabel(
         RelationType type,
         int greatDegree
 ) {
-    public RelationLabel {
-        Objects.requireNonNull(type, "type must not be null");
-        if (isGreatType(type)) {
-            if (greatDegree < 1) {
-                throw new IllegalArgumentException("greatDegree must be at least 1 for GREAT relations");
-            }
-        } else if (greatDegree != 0) {
-            throw new IllegalArgumentException("greatDegree must be 0 for non-GREAT relations");
-        }
-    }
-
     public String code() {
         return isGreatType(type) ? type.name() + "_" + greatDegree : type.name();
     }

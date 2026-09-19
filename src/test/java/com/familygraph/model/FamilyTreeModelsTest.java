@@ -35,14 +35,12 @@ class FamilyTreeModelsTest {
     }
 
     @Test
-    void rejectsInvalidRelationLevelCollections() {
+    void keepsRelationLevelsAsAlgorithmOutputWithoutRevalidatingThem() {
         Person person = new Person("P10", Gender.MALE, "Nam");
 
-        assertThrows(IllegalArgumentException.class, () -> new FamilyNode(person, List.of()));
-        assertThrows(IllegalArgumentException.class, () -> new FamilyNode(person, List.of(1, 1)));
-        assertThrows(IllegalArgumentException.class, () -> new FamilyNode(person, List.of(3, 1)));
-        assertThrows(IllegalArgumentException.class, () -> new FamilyNode(person, List.of(1, -2)));
-        assertThrows(IllegalArgumentException.class, () -> new FamilyNode(person, List.of(0, 1)));
+        FamilyNode node = new FamilyNode(person, List.of(3, 1));
+
+        assertEquals(List.of(3, 1), node.relationLevels());
     }
 
     @Test
@@ -56,10 +54,6 @@ class FamilyTreeModelsTest {
         assertEquals("GREAT_GRANDFATHER_2", greatGrandfather.code());
         assertEquals(4, greatGrandfather.generationOffset());
         assertEquals(-3, greatGranddaughter.generationOffset());
-        assertThrows(IllegalArgumentException.class,
-                () -> new RelationLabel(RelationType.GREAT_GRANDFATHER, 0));
-        assertThrows(IllegalArgumentException.class,
-                () -> new RelationLabel(RelationType.FATHER, 1));
     }
 
     @Test
@@ -95,13 +89,13 @@ class FamilyTreeModelsTest {
     }
 
     @Test
-    void requiresNodesAndPeopleToFollowTopologicalOrder() {
+    void copiesOrderedGraphCollectionsWithoutRevalidatingAlgorithmOutput() {
         Person parent = new Person("P01", Gender.MALE, "Nam");
         Person child = new Person("P02", Gender.FEMALE, "Lan");
         ParentChildEdge edge = new ParentChildEdge("P01", "P02");
         FamilyTreeQuery query = new FamilyTreeQuery("P02", 2, Direction.ANCESTORS);
 
-        assertThrows(IllegalArgumentException.class, () -> new OrderedFamilyGraph(
+        OrderedFamilyGraph graph = new OrderedFamilyGraph(
                 query,
                 List.of("P01", "P02"),
                 List.of(
@@ -109,6 +103,8 @@ class FamilyTreeModelsTest {
                         new FamilyNode(parent, List.of(1))
                 ),
                 List.of(edge)
-        ));
+        );
+
+        assertEquals(2, graph.nodes().size());
     }
 }

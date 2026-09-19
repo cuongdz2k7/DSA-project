@@ -12,7 +12,7 @@ ParentChildEdge(String parentId, String childId)
 FamilyGraph(List<Person> persons, List<ParentChildEdge> edges)
 ```
 
-- `id` là ID duy nhất. `name` thiếu được chuẩn hóa thành `""`.
+- `id` là ID duy nhất. Nhóm 3 chuẩn hóa tên thiếu thành `""` trước khi tạo `NormalizedInput`.
 - `Gender` gồm `MALE`, `FEMALE`, `UNKNOWN`.
 - Cạnh luôn có chiều `parentId -> childId`.
 - Danh sách người và cạnh giữ thứ tự input và không thể sửa sau khi tạo.
@@ -89,7 +89,7 @@ OrderedFamilyGraph(
 -3  chắt bậc 1
 ```
 
-Danh sách này không trùng, có cùng hướng và được sắp theo trị tuyệt đối tăng dần. Không tồn tại một trường `level` duy nhất.
+`buildFamilyView` phải tạo danh sách không trùng, cùng hướng và sắp theo trị tuyệt đối tăng dần. Không tồn tại một trường `level` duy nhất. `FamilyNode` chỉ lưu dữ liệu, không tự kiểm tra lại các quy tắc đó.
 
 ### Kết quả đã gắn nhãn
 
@@ -130,7 +130,7 @@ RelationshipResult(
 
 - `nodeIds` đi từ người nguồn lên tổ tiên, ngược chiều lưu của cạnh.
 - `edgeCount()` bằng `nodeIds.size() - 1`.
-- Mỗi tổ tiên chung có đúng một đường từ mỗi người trong query.
+- `checkRelationship` trả đúng một đường từ mỗi người trong query đến mỗi tổ tiên chung.
 - `related()` được suy ra từ việc `commonAncestorIds` có rỗng hay không.
 - `evidencePersons` và `evidenceEdges` chứa dữ liệu cần để web vẽ bằng chứng.
 - Result không chứa warning hoặc trường độ sâu thực tế.
@@ -174,11 +174,12 @@ NormalizedInput
   -> RelationshipResult
 ```
 
-## 6. Quy tắc bất biến
+## 6. Ranh giới kiểm tra dữ liệu
 
-- Không truyền `null` cho thuộc tính bắt buộc.
-- ID không được rỗng.
-- Mọi collection được sao chép bằng `List.copyOf`.
+- Các `record` là object truyền dữ liệu; chúng chỉ sao chép collection bằng `List.copyOf`, không tự kiểm tra quy tắc nghiệp vụ.
+- Nhóm 3 kiểm tra ID, giới tính, số lượng bản ghi, cạnh, chu trình và query trong `parseAndValidate(rawInput)`, rồi trả `ValidationError` nếu có lỗi.
+- Nhóm 1 và nhóm 2 chỉ nhận `NormalizedInput` hợp lệ; kết quả do thuật toán tạo phải tuân theo hợp đồng này và được xác nhận bằng test của từng module.
+- `ValidationResult` vẫn bảo vệ hai trạng thái đối nghịch: thành công có `data`, thất bại có `error`.
 - Không module nào được sửa object do module trước trả về.
 - Không dùng chuỗi tùy ý thay cho enum về giới tính, hướng, quan hệ hoặc mã lỗi.
 - Câu thông báo tiếng Việt thuộc output layer, không nằm trong result thuật toán.

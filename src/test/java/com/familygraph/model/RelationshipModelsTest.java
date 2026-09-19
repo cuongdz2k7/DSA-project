@@ -8,6 +8,7 @@ import com.familygraph.model.relationship.RelationshipPath;
 import com.familygraph.model.relationship.RelationshipResult;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,52 +69,32 @@ class RelationshipModelsTest {
     }
 
     @Test
-    void rejectsPathsWithoutEvidenceEdges() {
-        RelationshipPath pathFromFirst = new RelationshipPath(
-                "P05",
-                "P01",
-                List.of("P05", "P01")
-        );
-        RelationshipPath pathFromSecond = new RelationshipPath(
-                "P06",
-                "P01",
-                List.of("P06", "P01")
-        );
-
-        assertThrows(IllegalArgumentException.class, () -> new RelationshipResult(
-                new CheckRelationshipQuery("P05", "P06"),
-                List.of("P01"),
-                List.of(pathFromFirst, pathFromSecond),
-                List.of(
-                        new Person("P01", Gender.UNKNOWN, ""),
-                        new Person("P05", Gender.UNKNOWN, ""),
-                        new Person("P06", Gender.UNKNOWN, "")
-                ),
-                List.of()
-        ));
-    }
-
-    @Test
-    void requiresPathsToListFirstPersonBeforeSecondPerson() {
+    void copiesEvidenceCollectionsWithoutRevalidatingAlgorithmOutput() {
         CheckRelationshipQuery query = new CheckRelationshipQuery("P05", "P06");
         RelationshipPath firstPath = new RelationshipPath("P05", "P01", List.of("P05", "P01"));
         RelationshipPath secondPath = new RelationshipPath("P06", "P01", List.of("P06", "P01"));
-        List<Person> persons = List.of(
+        List<Person> persons = new ArrayList<>(List.of(
                 new Person("P01", Gender.UNKNOWN, ""),
                 new Person("P05", Gender.UNKNOWN, ""),
                 new Person("P06", Gender.UNKNOWN, "")
-        );
-        List<ParentChildEdge> edges = List.of(
+        ));
+        List<ParentChildEdge> edges = new ArrayList<>(List.of(
                 new ParentChildEdge("P01", "P05"),
                 new ParentChildEdge("P01", "P06")
-        );
+        ));
 
-        assertThrows(IllegalArgumentException.class, () -> new RelationshipResult(
+        RelationshipResult result = new RelationshipResult(
                 query,
                 List.of("P01"),
                 List.of(secondPath, firstPath),
                 persons,
                 edges
-        ));
+        );
+        persons.clear();
+        edges.clear();
+
+        assertEquals(3, result.evidencePersons().size());
+        assertEquals(2, result.evidenceEdges().size());
+        assertThrows(UnsupportedOperationException.class, () -> result.evidenceEdges().clear());
     }
 }
