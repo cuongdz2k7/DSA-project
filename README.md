@@ -33,4 +33,4 @@ Yêu cầu Java 17 trở lên và Maven 3.9 trở lên.
 mvn test
 ```
 
-Đặc tả đầy đủ nằm trong [kế hoạch làm việc](./Ke_hoach_chinh_sua_nhom.md). Hợp đồng Java object ngắn gọn nằm tại [docs/contracts/model-contract.md](./docs/contracts/model-contract.md).
+Đặc tả đầy đủ nằm trong [kế hoạch làm việc](./Ke_hoach_chinh_sua_nhom.md). Hợp đồng Java object ngắn gọn nằm tại [docs/contracts/model-contract.md](./docs/contracts/model-contract.md). Hướng dẫn chi tiết field và hàm của từng thành viên nằm tại [docs/contracts/huong-dan-model-va-ham.md](./docs/contracts/huong-dan-model-va-ham.md).
