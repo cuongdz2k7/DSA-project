@@ -27,7 +27,7 @@ Nhóm ưu tiên một sản phẩm gọn, chạy ổn định và dễ trình b�
 |---|---|
 | Ngôn ngữ chính | Java |
 | Mô hình | Gia phả được biểu diễn bằng đồ thị có hướng. Cạnh đi từ cha hoặc mẹ đến con. |
-| Thuật toán chính | Nhóm 3 kiểm tra và chuẩn hóa Input; Kahn tạo TOPO_ORDER; phép duyệt theo mức tạo LEVEL; BFS kiểm tra tổ tiên chung. |
+| Thuật toán chính | Nhóm 3 kiểm tra và chuẩn hóa Input; Kahn tạo TOPO_ORDER; phép duyệt theo mức tạo `relationLevels`; BFS kiểm tra tổ tiên chung. |
 | Sản phẩm tối thiểu | Các module Java trao đổi bằng Java object, trả output thô và được Tiến Cường tích hợp lên web. |
 | Giao diện | Web đơn giản do Tiến Cường tích hợp ở giai đoạn cuối, sau khi thuật toán và hợp đồng dữ liệu đã ổn định. |
 | Mốc đóng băng | Cuối tuần 5 dừng thêm chức năng lớn. Tuần 6 và 7 dành cho tích hợp, sửa lỗi, tài liệu và diễn tập. |
@@ -185,7 +185,7 @@ Trong dữ liệu này, P05 và P06 có hai tổ tiên chung là P01 và P02, đ
 
 - Trong RELATIONS, các nhãn được sắp theo độ dài đường đi tăng dần; các nhãn có cùng độ dài được sắp theo thứ tự chữ cái.
 
-> **TOPO_ORDER chỉ bảo đảm cha mẹ đứng trước con; không dùng TOPO_ORDER để xác định hàng thế hệ. Web phải dùng LEVEL.**
+> **TOPO_ORDER chỉ bảo đảm cha mẹ đứng trước con; không dùng TOPO_ORDER để xác định hàng thế hệ. Web phải dùng `RelationLabel.generationOffset()`.**
 
 #### Kết quả dữ liệu không hợp lệ
 
@@ -228,29 +228,18 @@ QUERY FAMILY_TREE
 TARGET <personId>
 DIRECTION <ANCESTORS|DESCENDANTS|BOTH>
 REQUESTED_GENERATIONS <k>
-FOUND_ANCESTOR_GENERATIONS <count>
-FOUND_DESCENDANT_GENERATIONS <count>
 TOPO_ORDER <id1> <id2> ...
-PERSON <id> <gender> NAME "<name>" LEVEL <level> RELATIONS <relation1,relation2,...>
+PERSON <id> <gender> NAME "<name>" RELATIONS <relation1,relation2,...>
 ...
 EDGE <parentId> <childId>
 ...
-WARNING <warningCode> <message>
 ```
 
-Nếu PERSON không có name trong đầu vào, đầu ra dùng NAME "". Có thể có nhiều dòng WARNING; nếu không có cảnh báo thì không in dòng này.
+Nếu PERSON không có name trong đầu vào, đầu ra dùng NAME "". Khi dữ liệu không đạt số đời yêu cầu, chương trình chỉ trả những người và cạnh thực sự tìm được; đây không phải warning hoặc error.
 
-##### Ý nghĩa số đời tìm được
+##### Quy ước RELATIONS và độ lệch thế hệ
 
-- FOUND_ANCESTOR_GENERATIONS bằng LEVEL tổ tiên lớn nhất cộng một. Nếu hướng không gồm tổ tiên thì giá trị là 0; nếu có hướng tổ tiên nhưng chỉ có TARGET thì giá trị là 1.
-
-- FOUND_DESCENDANT_GENERATIONS bằng trị tuyệt đối của LEVEL hậu duệ nhỏ nhất cộng một. Nếu hướng không gồm hậu duệ thì giá trị là 0; nếu có hướng hậu duệ nhưng chỉ có TARGET thì giá trị là 1.
-
-- Khi số đời tìm được nhỏ hơn số đời yêu cầu ở một hướng được chọn, chương trình trả ANCESTOR_DEPTH_NOT_REACHED hoặc DESCENDANT_DEPTH_NOT_REACHED. Cảnh báo chỉ nói dữ liệu hiện có chưa đạt độ sâu, không khẳng định người đó không có họ hàng.
-
-##### Quy ước LEVEL và RELATIONS
-
-| LEVEL | MALE | FEMALE | UNKNOWN |
+| Độ lệch thế hệ | MALE | FEMALE | UNKNOWN |
 |---|---|---|---|
 | 0 | SELF | SELF | SELF |
 | 1 | FATHER | MOTHER | PARENT |
@@ -260,9 +249,11 @@ Nếu PERSON không có name trong đầu vào, đầu ra dùng NAME "". Có th�
 | k ≥ 3 | GREAT_GRANDFATHER_(k−2) | GREAT_GRANDMOTHER_(k−2) | GREAT_GRANDPARENT_(k−2) |
 | −k, k ≥ 3 | GREAT_GRANDSON_(k−2) | GREAT_GRANDDAUGHTER_(k−2) | GREAT_GRANDCHILD_(k−2) |
 
-- Dấu của LEVEL cho biết hướng so với TARGET: số dương là tổ tiên, số âm là hậu duệ và 0 là TARGET. Giá trị tuyệt đối là số cạnh trên đường ngắn nhất.
+- Dấu của độ lệch cho biết hướng so với TARGET: số dương là tổ tiên, số âm là hậu duệ và 0 là TARGET.
 
-- Một người chỉ có một dòng PERSON. Nếu có nhiều đường hợp lệ, LEVEL dùng khoảng cách ngắn nhất có dấu, RELATIONS chứa tất cả nhãn hợp lệ và các cạnh thuộc các đường đó vẫn được giữ.
+- Một người chỉ có một dòng PERSON. Nếu có nhiều đường hợp lệ, RELATIONS chứa tất cả nhãn hợp lệ và các cạnh thuộc các đường đó vẫn được giữ.
+
+- Java object `RelationLabel` cung cấp `generationOffset()` để web lấy lại độ lệch thế hệ. Không lưu một trường LEVEL duy nhất vì một người có thể có nhiều mức quan hệ.
 
 - Nếu một người đồng thời là tổ tiên và hậu duệ của TARGET thì đồ thị đã có chu trình có hướng; đầu vào phải bị loại trước khi truy vấn.
 
@@ -274,13 +265,11 @@ QUERY FAMILY_TREE
 TARGET P03
 DIRECTION BOTH
 REQUESTED_GENERATIONS 2
-FOUND_ANCESTOR_GENERATIONS 2
-FOUND_DESCENDANT_GENERATIONS 2
 TOPO_ORDER P01 P02 P03 P04
-PERSON P01 MALE NAME "Nam" LEVEL 1 RELATIONS FATHER
-PERSON P02 FEMALE NAME "Hoa" LEVEL 1 RELATIONS MOTHER
-PERSON P03 MALE NAME "Cường" LEVEL 0 RELATIONS SELF
-PERSON P04 FEMALE NAME "An" LEVEL -1 RELATIONS DAUGHTER
+PERSON P01 MALE NAME "Nam" RELATIONS FATHER
+PERSON P02 FEMALE NAME "Hoa" RELATIONS MOTHER
+PERSON P03 MALE NAME "Cường" RELATIONS SELF
+PERSON P04 FEMALE NAME "An" RELATIONS DAUGHTER
 EDGE P01 P03
 EDGE P02 P03
 EDGE P03 P04
@@ -291,7 +280,7 @@ EDGE P03 P04
 Giả sử Nam P10 là cha của Bình P11; Bình là cha của Lan P12; đồng thời Nam cũng là cha của Minh P13 và Lan là mẹ của Minh. Với TARGET P13, Nam vừa là cha theo cạnh trực tiếp, vừa là cụ ông bậc 1 theo đường P10 → P11 → P12 → P13:
 
 ```text
-PERSON P10 MALE NAME "Nam" LEVEL 1 RELATIONS FATHER,GREAT_GRANDFATHER_1
+PERSON P10 MALE NAME "Nam" RELATIONS FATHER,GREAT_GRANDFATHER_1
 ```
 
 Đây vẫn là DAG vì không có đường đi từ hậu duệ quay trở lại Nam. Quan hệ vợ chồng không được đưa vào đồ thị nên không tạo cạnh riêng.
@@ -304,21 +293,14 @@ QUERY CHECK_RELATIONSHIP
 FIRST_PERSON <firstPersonId>
 SECOND_PERSON <secondPersonId>
 MAX_GENERATIONS 3
-FOUND_FIRST_GENERATIONS <count>
-FOUND_SECOND_GENERATIONS <count>
 RELATED <true|false>
 COMMON_ANCESTORS <count> [ancestorId1 ancestorId2 ...]
 PATH <sourceId> <ancestorId> LENGTH <edgeCount> NODES <sourceId> ... <ancestorId>
 ...
 MESSAGE <message>
-WARNING <warningCode> <message>
 ```
 
 - Tập tổ tiên của mỗi người gồm chính người đó và các tổ tiên cách tối đa hai cạnh. Vì vậy, truy vấn cũng phát hiện được quan hệ trực hệ gần.
-
-- FOUND_FIRST_GENERATIONS và FOUND_SECOND_GENERATIONS cho biết độ sâu thực tế tìm được, tính cả người đang xét.
-
-- Nếu độ sâu của một người chưa đạt ba đời, chương trình dùng FIRST_PERSON_DEPTH_NOT_REACHED hoặc SECOND_PERSON_DEPTH_NOT_REACHED. Cảnh báo chỉ mô tả giới hạn của dữ liệu hiện có.
 
 - Mỗi cặp người nguồn và tổ tiên chung có một PATH ngắn nhất. Các PATH được nhóm theo thứ tự COMMON_ANCESTORS; trong mỗi nhóm, đường của FIRST_PERSON đứng trước đường của SECOND_PERSON.
 
@@ -332,8 +314,6 @@ QUERY CHECK_RELATIONSHIP
 FIRST_PERSON P05
 SECOND_PERSON P06
 MAX_GENERATIONS 3
-FOUND_FIRST_GENERATIONS 3
-FOUND_SECOND_GENERATIONS 3
 RELATED true
 COMMON_ANCESTORS 2 P01 P02
 PATH P05 P01 LENGTH 2 NODES P05 P03 P01
@@ -350,19 +330,16 @@ QUERY CHECK_RELATIONSHIP
 FIRST_PERSON P05
 SECOND_PERSON P09
 MAX_GENERATIONS 3
-FOUND_FIRST_GENERATIONS 3
-FOUND_SECOND_GENERATIONS 2
 RELATED false
 COMMON_ANCESTORS 0
 MESSAGE Không phát hiện tổ tiên chung trong phạm vi ba đời và dữ liệu hiện có
-WARNING SECOND_PERSON_DEPTH_NOT_REACHED Dữ liệu của P09 chưa đạt đủ ba đời
 ```
 
 #### Quy tắc tích hợp bắt buộc
 
 - Các từ khóa, thứ tự trường và chiều EDGE phải đúng đặc tả; không trả người hoặc quan hệ không tồn tại.
 
-- Module thuật toán không đưa thông tin giao diện vào kết quả. Web chỉ đọc dữ liệu thô để bố trí LEVEL, nối EDGE và làm nổi bật PATH.
+- Module thuật toán không đưa thông tin giao diện vào kết quả. Web dùng `RelationLabel.generationOffset()` để bố trí thế hệ, EDGE để nối và PATH để làm nổi bật đường bằng chứng.
 
 > **Mọi thay đổi đối với raw Input, Java object hoặc output cuối phải được Tiến Cường xác nhận trước khi sửa code.**
 
@@ -390,7 +367,7 @@ Tiến Cường phụ trách tích hợp và xây dựng web; Đức Tiến hỗ
 
 - Nhận kết quả từ các module Java.
 - Cho phép nhập ID, số đời và hướng truy vấn.
-- Hiển thị cây gia phả theo `LEVEL` và nối các quan hệ bằng `EDGE`.
+- Hiển thị cây gia phả theo các độ lệch từ `RelationLabel.generationOffset()` và nối các quan hệ bằng `EDGE`.
 - Hiển thị kết quả kiểm tra ba đời.
 - Làm nổi bật các đường liên hệ trong `PATH`.
 
@@ -433,9 +410,9 @@ flowchart TD
 
 - Mỗi đỉnh đại diện cho một người có ID duy nhất và giới tính MALE, FEMALE hoặc UNKNOWN.
 
-Nếu giới tính là UNKNOWN ở LEVEL 1, chương trình dùng nhãn PARENT, tương ứng cha hoặc mẹ.
+Nếu giới tính là UNKNOWN ở độ lệch thế hệ 1, chương trình dùng nhãn PARENT, tương ứng cha hoặc mẹ.
 
-Nếu giới tính là UNKNOWN ở LEVEL 2, chương trình dùng nhãn GRANDPARENT, tương ứng ông hoặc bà.
+Nếu giới tính là UNKNOWN ở độ lệch thế hệ 2, chương trình dùng nhãn GRANDPARENT, tương ứng ông hoặc bà.
 
 - Mỗi cạnh luôn có chiều từ cha hoặc mẹ đến con.
 
@@ -448,9 +425,9 @@ Nếu giới tính là UNKNOWN ở LEVEL 2, chương trình dùng nhãn GRANDPAR
 | Đầu vào và kiểm tra dữ liệu | Nhóm 3 đọc raw Input, kiểm tra lỗi và tạo NormalizedInput | Nhóm 1 và nhóm 2 chỉ nhận Java object hợp lệ |
 | Nền tảng đồ thị | Quản lý người, quan hệ và các hướng truy vấn cần thiết | Giữ một nguồn dữ liệu chung cho mọi nhóm |
 | Sắp xếp và kiểm tra cấu trúc | Phương Mai tạo TOPO_ORDER trên FamilyGraph hợp lệ | Dùng Kahn; không parse hoặc kiểm tra lại raw Input |
-| Truy vấn gia phả | Tiến Cường lấy đồ thị con và tính LEVEL; Kim Chi gắn nhãn | Tách TOPO_ORDER, LEVEL và RELATIONS thành ba trách nhiệm rõ ràng |
+| Truy vấn gia phả | Tiến Cường lấy đồ thị con và tính `relationLevels`; Kim Chi gắn nhãn | Tách TOPO_ORDER, `relationLevels` và RELATIONS thành ba trách nhiệm rõ ràng |
 | Kiểm tra trong ba đời | Nhóm 2 duyệt tổ tiên trên FamilyGraph hợp lệ | Không kiểm tra Input; chỉ tập trung BFS, phần giao và PATH |
-| Trực quan và trình bày | Chuyển kết quả thô thành web, màu sắc và nội dung demo | Dùng LEVEL để đặt hàng, EDGE để nối và PATH để tô nổi bật |
+| Trực quan và trình bày | Chuyển kết quả thô thành web, màu sắc và nội dung demo | Dùng `RelationLabel.generationOffset()` để đặt hàng, EDGE để nối và PATH để tô nổi bật |
 
 ### Nguyên tắc tích hợp
 
@@ -489,43 +466,23 @@ Phân công dưới đây xác định rõ vùng trách nhiệm, hàm cần vi�
 ### Các kiểu dữ liệu trao đổi chung
 
 ```java
-record Person(String id, Gender gender, String name) {}
-
-record ParentChildEdge(String parentId, String childId) {}
-
-record FamilyGraph(
-    List<Person> persons,
-    List<ParentChildEdge> edges
-) {}
-
-interface ProjectQuery {}
-
-record FamilyTreeQuery(
-    String targetId,
-    int numberOfGenerations,
-    Direction direction
-) implements ProjectQuery {}
-
-record CheckRelationshipQuery(
-    String firstPersonId,
-    String secondPersonId
-) implements ProjectQuery {}
-
-record NormalizedInput(
-    FamilyGraph graph,
-    ProjectQuery query
-) {}
+com.familygraph.model.graph       // Person, ParentChildEdge, FamilyGraph, Gender
+com.familygraph.model.query       // ProjectQuery, FamilyTreeQuery, CheckRelationshipQuery, Direction
+com.familygraph.model.validation  // NormalizedInput, ValidationResult, ValidationError
+com.familygraph.model.familytree  // TopoResult, OrderedFamilyGraph, FamilyTreeResult
+com.familygraph.model.relationship // RelationshipPath, RelationshipResult
+com.familygraph.model.result      // ProjectResult
 ```
 
-`Gender` nhận `MALE`, `FEMALE` hoặc `UNKNOWN`. `Direction` nhận `ANCESTORS`, `DESCENDANTS` hoặc `BOTH`.
+`Gender` nhận `MALE`, `FEMALE` hoặc `UNKNOWN`. `Direction` nhận `ANCESTORS`, `DESCENDANTS` hoặc `BOTH`. Chữ ký đầy đủ, ý nghĩa từng thuộc tính và quy tắc bất biến nằm trong `docs/contracts/model-contract.md`.
 
 ### Bảng phân công tổng quát
 
 | Thành viên | Nhóm và vai trò | Công việc chính | Kết quả cần bàn giao |
 |---|---|---|---|
-| **Tiến Cường** | Điều phối, nhóm 1 và lead nhóm 3 | Chốt kiến trúc; cùng Đức Tiến chuẩn hóa Input; lấy đồ thị con, tính `LEVEL`; tích hợp các hàm và xây dựng web | `buildFamilyView`, luồng tích hợp hoàn chỉnh, web demo, tài liệu và slide |
+| **Tiến Cường** | Điều phối, nhóm 1 và lead nhóm 3 | Chốt kiến trúc; cùng Đức Tiến chuẩn hóa Input; lấy đồ thị con và tính toàn bộ `relationLevels`; tích hợp các hàm và xây dựng web | `buildFamilyView`, luồng tích hợp hoàn chỉnh, web demo, tài liệu và slide |
 | **Phương Mai** | Nhóm 1 | Sắp xếp topo trên `FamilyGraph` hợp lệ | `topologicalSort`, trace Kahn, độ phức tạp, test và giải thích code |
-| **Kim Chi** | Nhóm 1 | Gắn nhãn cho đồ thị gia phả đã được sắp xếp và tính `LEVEL` | `labelFamilyGraph`, bảng quy tắc nhãn, test, trace và giải thích code |
+| **Kim Chi** | Nhóm 1 | Gắn nhãn cho đồ thị gia phả đã được sắp xếp và có `relationLevels` | `labelFamilyGraph`, bảng quy tắc nhãn, test, trace và giải thích code |
 | **Đăng Doanh** | Lead nhóm 2 | Cài đặt logic kết luận kiểm tra quan hệ ba đời | Hàm kiểm tra quan hệ, tổ tiên chung, đường liên hệ, trace và độ phức tạp |
 | **Đắc Thịnh** | Nhóm 2 | Nghiên cứu BFS theo mức và kiểm thử thuật toán trên dữ liệu hợp lệ | Trace BFS, test ranh giới ba đời, nhiều nhánh và nhiều tổ tiên chung |
 | **Đức Tiến** | Nhóm 3 | Cài đặt kiểm tra, chuẩn hóa raw Input và sinh test dữ liệu lỗi | `parseAndValidate`, bộ `ERROR_CODE`, test Input không hợp lệ và giải thích code |
@@ -560,7 +517,7 @@ TopoResult topologicalSort(FamilyGraph graph)
 record TopoResult(List<String> topoOrder) {}
 ```
 
-Hàm không parse raw Input, không kiểm tra ID, không phát hiện lỗi cho người dùng, không tính `LEVEL`, không lọc số đời và không gắn nhãn. Do Input đã hợp lệ, `topoOrder` phải chứa toàn bộ ID đúng một lần.
+Hàm không parse raw Input, không kiểm tra ID, không phát hiện lỗi cho người dùng, không tính quan hệ, không lọc số đời và không gắn nhãn. Do Input đã hợp lệ, `topoOrder` phải chứa toàn bộ ID đúng một lần.
 
 **Nội dung nghiên cứu và bàn giao**
 
@@ -591,33 +548,27 @@ OrderedFamilyGraph buildFamilyView(
 **Công việc**
 
 - Duyệt ngược để lấy tổ tiên, duyệt xuôi để lấy hậu duệ, giới hạn ở `numberOfGenerations - 1` cạnh.
-- Tính `LEVEL` có dấu so với `TARGET`.
-- Lưu tất cả khoảng cách quan hệ hợp lệ để Kim Chi có thể tạo nhiều nhãn cho cùng một người.
+- Tính tất cả `relationLevels` có dấu so với `TARGET` để Kim Chi có thể tạo nhiều nhãn cho cùng một người.
 - Chỉ giữ người và `EDGE` thuộc đồ thị con của truy vấn.
 - Lọc `topoResult.topoOrder` để tạo `TOPO_ORDER` của đồ thị con.
-- Tính số đời thực tế ở từng hướng và tạo cảnh báo độ sâu khi cần.
 
 **Kết quả trả về**
 
 ```java
 record FamilyNode(
     Person person,
-    int level,
     List<Integer> relationLevels
 ) {}
 
 record OrderedFamilyGraph(
     FamilyTreeQuery query,
-    int foundAncestorGenerations,
-    int foundDescendantGenerations,
     List<String> topoOrder,
     List<FamilyNode> nodes,
-    List<ParentChildEdge> edges,
-    List<String> warnings
+    List<ParentChildEdge> edges
 ) {}
 ```
 
-`level` là khoảng cách ngắn nhất có dấu. `relationLevels` giữ các mức quan hệ khác nhau để xử lý trường hợp một người vừa là cha vừa là cụ theo hai đường khác nhau.
+`relationLevels` giữ toàn bộ độ lệch thế hệ có dấu để xử lý trường hợp một người vừa là cha vừa là cụ theo hai đường khác nhau. Không lưu một `level` duy nhất và không tạo warning khi dữ liệu không đạt đủ số đời.
 
 #### Kim Chi Gắn nhãn quan hệ
 
@@ -629,7 +580,7 @@ FamilyTreeResult labelFamilyGraph(OrderedFamilyGraph orderedGraph)
 
 **Tham số**
 
-- `orderedGraph`: đồ thị con đã có `TOPO_ORDER`, `LEVEL`, các khoảng cách quan hệ, người, giới tính, cạnh, số đời và cảnh báo.
+- `orderedGraph`: đồ thị con đã có `TOPO_ORDER`, `relationLevels`, người, giới tính và cạnh.
 
 **Công việc**
 
@@ -637,33 +588,29 @@ FamilyTreeResult labelFamilyGraph(OrderedFamilyGraph orderedGraph)
 - Dùng các nhãn `SELF`, `FATHER`, `MOTHER`, `PARENT`, `GRANDFATHER`, `GRANDMOTHER`, `GRANDPARENT`, `SON`, `DAUGHTER`, `CHILD`, `GRANDSON`, `GRANDDAUGHTER`, `GRANDCHILD` và các nhãn đời xa hơn đã quy định.
 - Nếu giới tính là `UNKNOWN`, sử dụng nhãn trung tính.
 - Mỗi người chỉ xuất hiện một lần trong danh sách `PERSON`; `RELATIONS` chứa toàn bộ nhãn hợp lệ, sắp theo độ dài đường đi rồi theo thứ tự chữ cái.
-- Giữ nguyên metadata, `TOPO_ORDER`, `LEVEL`, `EDGE` và cảnh báo nhận từ `OrderedFamilyGraph`.
+- Giữ nguyên query, `TOPO_ORDER` và `EDGE` nhận từ `OrderedFamilyGraph`.
 
 **Kết quả trả về**
 
 ```java
 record LabeledPerson(
     Person person,
-    int level,
-    List<String> relations
+    List<RelationLabel> relations
 ) {}
 
 record FamilyTreeResult(
     FamilyTreeQuery query,
-    int foundAncestorGenerations,
-    int foundDescendantGenerations,
     List<String> topoOrder,
     List<LabeledPerson> persons,
-    List<ParentChildEdge> edges,
-    List<String> warnings
+    List<ParentChildEdge> edges
 ) {}
 ```
 
-Kim Chi không chạy topo, không tính lại `LEVEL`, không tìm lại đồ thị con và không kiểm tra Input.
+`RelationLabel` cung cấp `code()` để tạo mã output và `generationOffset()` để web lấy lại độ lệch thế hệ. Kim Chi không chạy topo, không tìm lại đồ thị con và không kiểm tra Input.
 
 **Nội dung nghiên cứu và bàn giao**
 
-- Giải thích quy tắc chuyển `LEVEL + gender` thành nhãn.
+- Giải thích quy tắc chuyển `relationLevel + gender` thành nhãn.
 - Trace việc gắn nhãn trên một `OrderedFamilyGraph` nhỏ.
 - Test `UNKNOWN`, các mức tổ tiên và hậu duệ xa, nhiều nhãn và dữ liệu thiếu ở một nhánh.
 - Độ phức tạp theo số người và tổng số mức quan hệ trong đồ thị con.
@@ -678,7 +625,7 @@ FamilyTreeResult result = labelFamilyGraph(view);
 String rawOutput = serializeFamilyTree(result);
 ```
 
-Tiến Cường gọi các hàm theo đúng thứ tự trên, ghép kết quả thành output hoàn chỉnh và chuyển dữ liệu cho web. `TOPO_ORDER` đến từ hàm của Phương Mai; `LEVEL` và đồ thị con do Tiến Cường chuẩn bị; `RELATIONS` đến từ hàm của Kim Chi.
+Tiến Cường gọi các hàm theo đúng thứ tự trên, ghép kết quả thành output hoàn chỉnh và chuyển dữ liệu cho web. `TOPO_ORDER` đến từ hàm của Phương Mai; `relationLevels` và đồ thị con do Tiến Cường chuẩn bị; `RELATIONS` đến từ hàm của Kim Chi.
 
 ### Nhóm 2 Kiểm tra quan hệ ba đời
 
@@ -694,6 +641,30 @@ RelationshipResult checkRelationship(
 ```
 
 Hàm duyệt tổ tiên của hai người trong phạm vi ba đời, tìm phần giao, lưu một đường ngắn nhất từ mỗi người đến từng tổ tiên chung và trả kết quả theo đặc tả. Hàm không kiểm tra raw Input.
+
+**Kết quả trả về**
+
+```java
+record RelationshipPath(
+    String sourceId,
+    String ancestorId,
+    List<String> nodeIds
+) {
+    int edgeCount();
+}
+
+record RelationshipResult(
+    CheckRelationshipQuery query,
+    List<String> commonAncestorIds,
+    List<RelationshipPath> paths,
+    List<Person> evidencePersons,
+    List<ParentChildEdge> evidenceEdges
+) implements ProjectResult {
+    boolean related();
+}
+```
+
+`nodeIds` đi từ người nguồn lên tổ tiên chung, ngược với chiều lưu của EDGE. `evidencePersons` và `evidenceEdges` chứa dữ liệu cần để web vẽ các đường bằng chứng. Kết quả không chứa warning hoặc độ sâu thực tế; `related()` được suy ra từ việc `commonAncestorIds` có rỗng hay không.
 
 Đắc Thịnh tập trung nghiên cứu BFS theo mức, chuẩn bị trace và test thuật toán trên dữ liệu hợp lệ:
 
@@ -724,8 +695,8 @@ ValidationResult parseAndValidate(String rawInput)
 
 ```java
 record ValidationError(
-    String errorCode,
-    String message,
+    ValidationErrorCode code,
+    String detail,
     List<String> cycle
 ) {}
 
@@ -793,7 +764,7 @@ Thành viên: Tiến Cường và Đức Tiến.
 | **Tuần 3 và 4** | Phương Mai viết `topologicalSort`; Tiến Cường viết `buildFamilyView`; Kim Chi viết `labelFamilyGraph` | Đăng Doanh viết logic kiểm tra; Đắc Thịnh chuẩn bị trace BFS và test dữ liệu hợp lệ | Đức Tiến viết `parseAndValidate` và xây dựng bộ test Input lỗi; Tiến Cường review | Các hàm chạy độc lập và trao đổi đúng Java object |
 | **Tuần 5** | Tích hợp topo, đồ thị con và labeling thành `FamilyTreeResult` | Hoàn thiện `RelationshipResult` và đường liên hệ | Hoàn thiện validator, chuẩn hóa và toàn bộ test Input | Hai truy vấn trả đúng output; đóng băng hợp đồng dữ liệu |
 | **Tuần 6** | Hỗ trợ sửa phần gia phả và chuẩn bị nội dung trình bày | Hỗ trợ tích hợp và sửa lỗi nhóm 2 | Tiến Cường tích hợp toàn hệ thống, bắt đầu web; Đức Tiến chạy test Input và integration | Chương trình chạy từ raw Input đến output; có bản web đầu tiên |
-| **Tuần 7** | Hoàn thiện web, hình gia phả và slide topo, LEVEL, labeling | Sửa lỗi và hoàn thiện slide BFS, tổ tiên chung, đường liên hệ | Hoàn thiện demo lỗi Input và phần trình bày chuẩn hóa | Sản phẩm, slide, dữ liệu demo và kịch bản thuyết trình hoàn chỉnh |
+| **Tuần 7** | Hoàn thiện web, hình gia phả và slide topo, `relationLevels`, labeling | Sửa lỗi và hoàn thiện slide BFS, tổ tiên chung, đường liên hệ | Hoàn thiện demo lỗi Input và phần trình bày chuẩn hóa | Sản phẩm, slide, dữ liệu demo và kịch bản thuyết trình hoàn chỉnh |
 | **Tuần 8** | Trình bày topo, gia phả và tích hợp | Trình bày BFS và kiểm tra ba đời | Trình bày chuẩn hóa và lỗi Input | Cả nhóm thuyết trình và trả lời câu hỏi |
 
 ### Deadline
@@ -848,7 +819,7 @@ Bài trình bày cần bao phủ tám nội dung trong yêu cầu của môn h�
 | Mở đầu và bài toán | Mục tiêu, Input, Output và quy ước ba đời | Tiến Cường | 2 phút |
 | Chuẩn hóa Input | Luồng raw Input, Java object, lỗi cấu trúc và ví dụ | Đức Tiến | 2 phút |
 | Sắp xếp topo | Ý tưởng Kahn, trace và vai trò của TOPO_ORDER | Phương Mai | 2 phút |
-| Quan hệ gia phả | LEVEL, quy tắc gắn nhãn và nhiều đường quan hệ | Kim Chi | 2 phút |
+| Quan hệ gia phả | `relationLevels`, quy tắc gắn nhãn và nhiều đường quan hệ | Kim Chi | 2 phút |
 | BFS | Duyệt theo mức, giới hạn phạm vi và dựng đường | Đắc Thịnh | 2 phút |
 | Kết luận ba đời | Phần giao, bằng chứng và giới hạn dữ liệu | Đăng Doanh | 2 phút |
 | Tích hợp và demo | Ghép module, output thô, web và kết quả chạy | Tiến Cường | 3 phút |

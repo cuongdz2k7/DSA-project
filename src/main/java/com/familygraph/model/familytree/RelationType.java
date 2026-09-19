@@ -1,0 +1,29 @@
+package com.familygraph.model.familytree;
+
+public enum RelationType {
+    SELF,
+
+    FATHER,
+    MOTHER,
+    PARENT,
+
+    GRANDFATHER,
+    GRANDMOTHER,
+    GRANDPARENT,
+
+    SON,
+    DAUGHTER,
+    CHILD,
+
+    GRANDSON,
+    GRANDDAUGHTER,
+    GRANDCHILD,
+
+    GREAT_GRANDFATHER,
+    GREAT_GRANDMOTHER,
+    GREAT_GRANDPARENT,
+
+    GREAT_GRANDSON,
+    GREAT_GRANDDAUGHTER,
+    GREAT_GRANDCHILD
+}
