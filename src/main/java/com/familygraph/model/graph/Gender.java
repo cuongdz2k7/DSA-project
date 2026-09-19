@@ -1,4 +1,4 @@
-package com.familygraph.model;
+package com.familygraph.model.graph;
 
 public enum Gender {
     MALE,

@@ -1,0 +1,16 @@
+package com.familygraph.model.validation;
+
+public enum ValidationErrorCode {
+    MALFORMED_INPUT,
+    INVALID_COUNT,
+    DUPLICATE_ID,
+    INVALID_GENDER,
+    UNKNOWN_ID,
+    DUPLICATE_EDGE,
+    SELF_PARENT,
+    DIRECTED_CYCLE,
+    INVALID_QUERY_TYPE,
+    INVALID_GENERATION,
+    INVALID_DIRECTION,
+    SAME_PERSON_QUERY
+}
