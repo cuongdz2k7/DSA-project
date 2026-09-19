@@ -49,7 +49,8 @@ Nhóm 1 và nhóm 2 chỉ dùng `NormalizedInput` hợp lệ.
 
 ### 4.2. Test sau khi code xong
 
-- Test ví dụ chung sẽ để ở `examples/valid/` và `examples/invalid/`. Mọi người có thể vào lấy test ví dụ và sau đó nhờ AI viết Unit test Java dựa theo để check code có đúng hay không.
+- Test ví dụ sẽ để ở `examples/valid/` và `examples/invalid/`. Mọi người có thể nhờ AI gen ra 1 vài test ví dụ đủ nhỏ nhưng tổng quát để có thể kiểm tra thuật toán và hợp lí để trace bằng tay nhé.
+- Mọi người có thể vào lấy test ví dụ và sau đó nhờ AI viết Unit test Java dựa theo để check code có đúng hay không.
 - Mọi ngươi viết xong cần trace bằng tay được thuật toán theo một test ví dụ nào đấy. 
 
 ### 4.3. Kiểm tra trước khi commit
