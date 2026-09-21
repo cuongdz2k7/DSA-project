@@ -1,8 +1,7 @@
-package com.familygraph.model;
+package com.familygraph.model.query;
 
 public record FamilyTreeQuery(
         String targetId,
         int numberOfGenerations,
         Direction direction
-) implements ProjectQuery {
-}
+) implements ProjectQuery {}
