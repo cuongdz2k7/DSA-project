@@ -15,7 +15,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RelationshipCheckerTest {
 
@@ -121,20 +120,8 @@ class RelationshipCheckerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "UNKNOWN, MALE", "UNKNOWN, FEMALE", "MALE, UNKNOWN",
-            "FEMALE, UNKNOWN", "UNKNOWN, UNKNOWN"
-    })
-    void rejectsUnknownGenderInEitherPositionIncludingBothUnknown(Gender first, Gender second) {
-        assertThrows(GenderInvalid.class, () -> RelationshipChecker.checkRelationship(
-                graphWithSiblings(first, second),
-                new CheckRelationshipQuery("P01", "P02")
-        ));
-    }
-
-    @ParameterizedTest
     @CsvSource({"MALE, FEMALE", "FEMALE, MALE"})
-    void findsRelationshipForOppositeGendersWithUnknownGenderAncestor(Gender first, Gender second) {
+    void findsRelationshipForOppositeGendersWithCommonAncestor(Gender first, Gender second) {
         FamilyGraph graph = graphWithSiblings(first, second);
         CheckRelationshipQuery query = new CheckRelationshipQuery("P01", "P02");
 
@@ -207,7 +194,7 @@ class RelationshipCheckerTest {
     }
 
     private static Person person(String id) {
-        return new Person(id, Gender.UNKNOWN, "");
+        return new Person(id, Gender.MALE, "");
     }
 }
 

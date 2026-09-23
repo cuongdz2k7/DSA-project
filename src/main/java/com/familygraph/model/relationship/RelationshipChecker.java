@@ -1,7 +1,6 @@
 package com.familygraph.model.relationship;
 
 import com.familygraph.model.graph.FamilyGraph;
-import com.familygraph.model.graph.Gender;
 import com.familygraph.model.graph.ParentChildEdge;
 import com.familygraph.model.graph.Person;
 import com.familygraph.model.query.CheckRelationshipQuery;
@@ -22,14 +21,16 @@ public final class RelationshipChecker {
     private RelationshipChecker() {
     }
 
+    /**
+     * Checks a validated graph and query. Person IDs must exist and all genders
+     * must have been validated by the input layer before calling this method.
+     */
     public static RelationshipResult checkRelationship(
             FamilyGraph graph,
             CheckRelationshipQuery query
     ) {
         Person firstPerson = findPerson(graph, query.firstPersonId());
         Person secondPerson = findPerson(graph, query.secondPersonId());
-        validateGender(firstPerson);
-        validateGender(secondPerson);
 
         if (firstPerson.gender() == secondPerson.gender()) {
             return new RelationshipResult(query, List.of(), List.of(), List.of(), List.of());
@@ -92,12 +93,6 @@ public final class RelationshipChecker {
                 .filter(person -> person.id().equals(personId))
                 .findFirst()
                 .get();
-    }
-
-    private static void validateGender(Person person) {
-        if (person.gender() == null || person.gender() == Gender.UNKNOWN) {
-            throw new GenderInvalid(person.id());
-        }
     }
 
     private static Map<String, List<String>> buildParentsByChild(
