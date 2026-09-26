@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -22,8 +21,9 @@ public final class RelationshipChecker {
     }
 
     /**
-     * Checks a validated graph and query. Person IDs must exist and all genders
-     * must have been validated by the input layer before calling this method.
+     * Finds all paths to common ancestors within the generation limit.
+     * The input layer must validate person IDs and genders and ensure an acyclic
+     * graph without duplicate edges before calling this method.
      */
     public static RelationshipResult checkRelationship(
             FamilyGraph graph,
@@ -38,11 +38,11 @@ public final class RelationshipChecker {
 
         Map<String, List<String>> parentsByChild = buildParentsByChild(graph);
 
-        Map<String, RelationshipPath> firstAncestorPaths = findAncestorPaths(
+        Map<String, List<RelationshipPath>> firstAncestorPaths = findAncestorPaths(
                 query.firstPersonId(),
                 parentsByChild
         );
-        Map<String, RelationshipPath> secondAncestorPaths = findAncestorPaths(
+        Map<String, List<RelationshipPath>> secondAncestorPaths = findAncestorPaths(
                 query.secondPersonId(),
                 parentsByChild
         );
@@ -54,8 +54,8 @@ public final class RelationshipChecker {
 
         List<RelationshipPath> paths = new ArrayList<>();
         for (String ancestorId : commonAncestorIds) {
-            paths.add(firstAncestorPaths.get(ancestorId));
-            paths.add(secondAncestorPaths.get(ancestorId));
+            paths.addAll(firstAncestorPaths.get(ancestorId));
+            paths.addAll(secondAncestorPaths.get(ancestorId));
         }
 
         Set<String> evidencePersonIds = new HashSet<>();
@@ -109,32 +109,29 @@ public final class RelationshipChecker {
         return parentsByChild;
     }
 
-    private static Map<String, RelationshipPath> findAncestorPaths(
+    private static Map<String, List<RelationshipPath>> findAncestorPaths(
             String sourceId,
             Map<String, List<String>> parentsByChild
     ) {
-        Map<String, RelationshipPath> ancestorPaths = new LinkedHashMap<>();
+        Map<String, List<RelationshipPath>> ancestorPaths = new LinkedHashMap<>();
         Queue<RelationshipPath> queue = new ArrayDeque<>();
-        Set<String> visited = new LinkedHashSet<>();
         int maxEdges = CheckRelationshipQuery.MAX_GENERATIONS - 1;
 
         queue.add(new RelationshipPath(sourceId, sourceId, List.of(sourceId)));
-        visited.add(sourceId);
 
         while (!queue.isEmpty()) {
             RelationshipPath currentPath = queue.remove();
             String currentId = currentPath.ancestorId();
-            ancestorPaths.put(currentId, currentPath);
+            ancestorPaths
+                    .computeIfAbsent(currentId, ignored -> new ArrayList<>())
+                    .add(currentPath);
 
             if (currentPath.edgeCount() >= maxEdges) {
                 continue;
             }
 
             for (String parentId : parentsByChild.getOrDefault(currentId, List.of())) {
-                if (!visited.add(parentId)) {
-                    continue;
-                }
-
+                // Each route remains eligible, even if another route reached this parent.
                 List<String> nodeIds = new ArrayList<>(currentPath.nodeIds());
                 nodeIds.add(parentId);
                 queue.add(new RelationshipPath(sourceId, parentId, nodeIds));
