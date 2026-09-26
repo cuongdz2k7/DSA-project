@@ -171,6 +171,110 @@ class RelationshipCheckerTest {
     }
 
     @Test
+    void includesAllPathsFromBothPeopleToTheSameCommonAncestor() {
+        FamilyGraph graph = new FamilyGraph(
+                List.of(
+                        person("P00"),
+                        person("P10"),
+                        new Person("P11", Gender.FEMALE, ""),
+                        person("P20"),
+                        new Person("P21", Gender.FEMALE, ""),
+                        person("P01"),
+                        new Person("P02", Gender.FEMALE, "")
+                ),
+                List.of(
+                        new ParentChildEdge("P00", "P10"),
+                        new ParentChildEdge("P00", "P11"),
+                        new ParentChildEdge("P00", "P20"),
+                        new ParentChildEdge("P00", "P21"),
+                        new ParentChildEdge("P10", "P01"),
+                        new ParentChildEdge("P11", "P01"),
+                        new ParentChildEdge("P20", "P02"),
+                        new ParentChildEdge("P21", "P02")
+                )
+        );
+
+        RelationshipResult result = RelationshipChecker.checkRelationship(
+                graph, new CheckRelationshipQuery("P01", "P02")
+        );
+
+        assertTrue(result.related());
+        assertEquals(List.of("P00"), result.commonAncestorIds());
+        assertEquals(List.of(
+                new RelationshipPath("P01", "P00", List.of("P01", "P10", "P00")),
+                new RelationshipPath("P01", "P00", List.of("P01", "P11", "P00")),
+                new RelationshipPath("P02", "P00", List.of("P02", "P20", "P00")),
+                new RelationshipPath("P02", "P00", List.of("P02", "P21", "P00"))
+        ), result.paths());
+        assertEquals(graph.persons(), result.evidencePersons());
+        assertEquals(graph.edges(), result.evidenceEdges());
+    }
+
+    @Test
+    void includesLongerPathAlongsideShortestPathWithinThreeGenerations() {
+        FamilyGraph graph = new FamilyGraph(
+                List.of(
+                        person("P00"),
+                        new Person("P10", Gender.FEMALE, ""),
+                        person("P01"),
+                        new Person("P02", Gender.FEMALE, "")
+                ),
+                List.of(
+                        new ParentChildEdge("P00", "P10"),
+                        new ParentChildEdge("P00", "P01"),
+                        new ParentChildEdge("P10", "P01"),
+                        new ParentChildEdge("P00", "P02")
+                )
+        );
+
+        RelationshipResult result = RelationshipChecker.checkRelationship(
+                graph, new CheckRelationshipQuery("P01", "P02")
+        );
+
+        assertTrue(result.related());
+        assertEquals(List.of("P00"), result.commonAncestorIds());
+        assertEquals(List.of(
+                new RelationshipPath("P01", "P00", List.of("P01", "P00")),
+                new RelationshipPath("P01", "P00", List.of("P01", "P10", "P00")),
+                new RelationshipPath("P02", "P00", List.of("P02", "P00"))
+        ), result.paths());
+        assertEquals(graph.persons(), result.evidencePersons());
+        assertEquals(graph.edges(), result.evidenceEdges());
+    }
+
+    @Test
+    void excludesLongerPathPastThreeGenerationsToAnAlreadyReachableAncestor() {
+        Person ancestor = person("P00");
+        Person first = person("P01");
+        Person second = new Person("P02", Gender.FEMALE, "");
+        List<ParentChildEdge> directEdges = List.of(
+                new ParentChildEdge("P00", "P01"),
+                new ParentChildEdge("P00", "P02")
+        );
+        List<ParentChildEdge> edges = new ArrayList<>(directEdges);
+        edges.add(new ParentChildEdge("P00", "P10"));
+        edges.add(new ParentChildEdge("P10", "P11"));
+        edges.add(new ParentChildEdge("P11", "P01"));
+        FamilyGraph graph = new FamilyGraph(
+                List.of(ancestor, person("P10"), new Person("P11", Gender.FEMALE, ""), first, second),
+                edges
+        );
+
+        RelationshipResult result = RelationshipChecker.checkRelationship(
+                graph, new CheckRelationshipQuery("P01", "P02")
+        );
+
+        assertTrue(result.related());
+        assertEquals(List.of("P00"), result.commonAncestorIds());
+        assertEquals(List.of(
+                new RelationshipPath("P01", "P00", List.of("P01", "P00")),
+                new RelationshipPath("P02", "P00", List.of("P02", "P00"))
+        ), result.paths());
+        assertEquals(List.of(ancestor, first, second), result.evidencePersons());
+        assertEquals(directEdges, result.evidenceEdges());
+    }
+
+    @Test
     void returnsUnrelatedForOppositeGendersWithoutCommonAncestor() {
         RelationshipResult result = RelationshipChecker.checkRelationship(
                 new FamilyGraph(List.of(
