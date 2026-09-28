@@ -1,9 +1,11 @@
-package com.familygraph.model.relationship;
+package com.familygraph.relationship;
 
 import com.familygraph.model.graph.FamilyGraph;
 import com.familygraph.model.graph.ParentChildEdge;
 import com.familygraph.model.graph.Person;
 import com.familygraph.model.query.CheckRelationshipQuery;
+import com.familygraph.model.relationship.RelationshipPath;
+import com.familygraph.model.relationship.RelationshipResult;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
