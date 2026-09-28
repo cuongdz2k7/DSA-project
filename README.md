@@ -27,7 +27,7 @@ Project Java sử dụng đồ thị có hướng để xây dựng gia phả v�
 
 ## Kiểm tra project
 
-Yêu cầu Java 17 trở lên và Maven 3.9 trở lên.
+Yêu cầu Java 25 LTS trở lên và Maven 3.9 trở lên.
 
 ```bash
 mvn test
