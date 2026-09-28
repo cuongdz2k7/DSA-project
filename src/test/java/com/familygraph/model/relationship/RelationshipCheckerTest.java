@@ -1,20 +1,21 @@
 package com.familygraph.model.relationship;
 
-import com.familygraph.model.graph.FamilyGraph;
-import com.familygraph.model.graph.Gender;
-import com.familygraph.model.graph.ParentChildEdge;
-import com.familygraph.model.graph.Person;
-import com.familygraph.model.query.CheckRelationshipQuery;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import com.familygraph.model.graph.FamilyGraph;
+import com.familygraph.model.graph.Gender;
+import com.familygraph.model.graph.ParentChildEdge;
+import com.familygraph.model.graph.Person;
+import com.familygraph.model.query.CheckRelationshipQuery;
+import com.familygraph.relationship.RelationshipChecker;
 
 class RelationshipCheckerTest {
 
