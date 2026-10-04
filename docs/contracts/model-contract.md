@@ -130,7 +130,8 @@ RelationshipResult(
 
 - `nodeIds` đi từ người nguồn lên tổ tiên, ngược chiều lưu của cạnh.
 - `edgeCount()` bằng `nodeIds.size() - 1`.
-- `checkRelationship` trả đúng một đường từ mỗi người trong query đến mỗi tổ tiên chung.
+- `checkRelationship` trả tất cả đường từ mỗi người trong query đến mỗi tổ tiên chung, trong giới hạn ba đời (tối đa hai cạnh cho mỗi đường).
+- `paths` gom theo ID tổ tiên chung tăng dần; với mỗi tổ tiên, các đường của người thứ nhất đứng trước các đường của người thứ hai. Không ghép thành từng cặp đường chứng minh riêng.
 - `related()` được suy ra từ việc `commonAncestorIds` có rỗng hay không.
 - `evidencePersons` và `evidenceEdges` chứa dữ liệu cần để web vẽ bằng chứng.
 - Result không chứa warning hoặc trường độ sâu thực tế.
