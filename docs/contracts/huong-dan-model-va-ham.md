@@ -416,7 +416,7 @@ public record RelationshipResult(
 |---|---|---|
 | `query` | `CheckRelationshipQuery` | Hai người đang được kiểm tra. |
 | `commonAncestorIds` | `List<String>` | Các tổ tiên chung tìm được trong phạm vi ba đời. |
-| `paths` | `List<RelationshipPath>` | Đường bằng chứng từ mỗi người tới từng tổ tiên chung. |
+| `paths` | `List<RelationshipPath>` | Tất cả đường từ mỗi người tới từng tổ tiên chung trong phạm vi ba đời (tối đa hai cạnh), kể cả các đường dài hơn đường ngắn nhất. |
 | `evidencePersons` | `List<Person>` | Các người xuất hiện trên những đường bằng chứng. |
 | `evidenceEdges` | `List<ParentChildEdge>` | Các cạnh xuất hiện trên những đường bằng chứng. |
 | `related()` | `boolean` | `true` nếu `commonAncestorIds` không rỗng; không lưu thành field riêng. |
