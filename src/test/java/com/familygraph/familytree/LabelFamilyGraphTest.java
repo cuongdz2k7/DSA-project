@@ -26,8 +26,8 @@ public class LabelFamilyGraphTest {
         FamilyNode fatherNode = new FamilyNode(fatherPerson, List.of(1));
         FamilyNode sonNode = new FamilyNode(sonPerson, List.of(-1));
 
-        List<FamilyNode> nodes = List.of(selfNode, fatherNode, sonNode);
         List<String> topoOrder = List.of("P2", "P1", "P3");
+        List<FamilyNode> nodes = List.of(fatherNode, selfNode, sonNode);
         List<ParentChildEdge> edges = List.of();
 
         // Dùng Direction enum chuẩn cho query
@@ -50,8 +50,8 @@ public class LabelFamilyGraphTest {
         assertEquals(3, result.persons().size(), "Phải có đúng 3 người được gắn nhãn");
 
         // Kiểm tra nhãn của từng người
-        assertEquals(RelationType.SELF, result.persons().get(0).relations().get(0).type());
-        assertEquals(RelationType.FATHER, result.persons().get(1).relations().get(0).type());
+        assertEquals(RelationType.FATHER, result.persons().get(0).relations().get(0).type());
+        assertEquals(RelationType.SELF, result.persons().get(1).relations().get(0).type());
         assertEquals(RelationType.SON, result.persons().get(2).relations().get(0).type());
     }
 }
