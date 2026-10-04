@@ -76,7 +76,7 @@ class RawInputParserTest {
     }
 
     @Test
-    void acceptsMultipleParentsWithTheSameGender() {
+    void rejectsTwoKnownParentsWithTheSameGender() {
         String rawInput = """
                 PERSON_COUNT 3
                 PERSON P01 FEMALE "A"
@@ -90,8 +90,9 @@ class RawInputParserTest {
 
         ValidationResult result = parser.parseAndValidate(rawInput);
 
-        assertTrue(result.valid());
-        assertEquals(2, result.data().graph().edges().size());
+        assertEquals(false, result.valid());
+        assertEquals(ValidationErrorCode.SAME_GENDER_PARENTS, result.error().code());
+        assertEquals("child=P03 parents=P01,P02 gender=FEMALE", result.error().detail());
     }
 
     @Test

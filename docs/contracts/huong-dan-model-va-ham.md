@@ -161,6 +161,23 @@ public record NormalizedInput(
 
 Nhóm 1 và 2 không nhận raw input; các bạn nhận `NormalizedInput`, sau đó ép kiểu `query` đúng với luồng đang xử lý.
 
+### 2.4. Object trung gian của nhóm 3 — package `com.familygraph.input.model`
+
+Các object này tách việc đọc text khỏi việc kiểm tra nghiệp vụ. Nhóm 1 và nhóm 2 không sử dụng chúng.
+
+| Object | Field | Ý nghĩa |
+|---|---|---|
+| `ParsedPerson` | `id`, `genderToken`, `name` | Bản ghi người vừa đọc từ text; `genderToken` vẫn là chuỗi nên có thể chưa hợp lệ. |
+| `ParsedParentChildEdge` | `parentId`, `childId` | Bản ghi cạnh vừa đọc từ text. |
+| `ParsedFamilyGraph` | `declaredPersonCount`, `persons`, `declaredEdgeCount`, `edges` | Cả số lượng khai báo và danh sách thực tế để validator đối chiếu. |
+| `ParsedQuery` | `type`, `arguments` | Loại query và các token tham số chưa chuẩn hóa. |
+| `ParsedInput` | `graph`, `query` | Toàn bộ input đã đúng cú pháp nhưng chưa chắc hợp lệ về nghiệp vụ. |
+| `ParseResult` | `successful`, `data`, `error` | Kết quả tầng cú pháp; chỉ trả `MALFORMED_INPUT` khi thất bại. |
+| `ValidatedInput` | `parsedInput` | Object đánh dấu dữ liệu đã vượt qua validator. |
+| `GraphValidationResult` | `valid`, `data`, `error` | Kết quả kiểm tra nghiệp vụ đồ thị và query. |
+
+Mọi `List` được sao chép bằng `List.copyOf`. `ParseResult` và `GraphValidationResult` bảo đảm trạng thái thành công chỉ có `data`, trạng thái thất bại chỉ có `error`.
+
 ## 3. Nhóm object hàm trả ra
 
 ### 3.1. Kết quả kiểm tra input — package `com.familygraph.model.validation`
@@ -177,6 +194,7 @@ public enum ValidationErrorCode {
     DUPLICATE_EDGE,
     SELF_PARENT,
     DIRECTED_CYCLE,
+    SAME_GENDER_PARENTS,
     INVALID_QUERY_TYPE,
     INVALID_GENERATION,
     INVALID_DIRECTION,
@@ -196,6 +214,7 @@ public enum ValidationErrorCode {
 | `DUPLICATE_EDGE` | Một cạnh cha/mẹ → con xuất hiện lặp lại. |
 | `SELF_PARENT` | Một người là cha/mẹ trực tiếp của chính mình. |
 | `DIRECTED_CYCLE` | Đồ thị huyết thống tạo chu trình có hướng. |
+| `SAME_GENDER_PARENTS` | Một người có hai phụ huynh khác ID cùng mang giới tính xác định `MALE` hoặc cùng `FEMALE`; `UNKNOWN` được bỏ qua. |
 | `INVALID_QUERY_TYPE` | Lệnh query không phải `FAMILY_TREE` hoặc `CHECK_RELATIONSHIP`. |
 | `INVALID_GENERATION` | Số đời không hợp lệ. |
 | `INVALID_DIRECTION` | Hướng tìm không phải `ANCESTORS`, `DESCENDANTS` hoặc `BOTH`. |
@@ -438,6 +457,22 @@ ValidationResult parseAndValidate(String rawInput)
 | Trả về khi lỗi | `ValidationResult.failure(ValidationError)` chứa mã lỗi, chi tiết và chu trình nếu có. |
 
 Đức Tiến kiểm tra tất cả quy tắc input: số lượng bản ghi, ID, giới tính, cạnh, self-parent, chu trình, loại query, số đời, hướng và hai người trùng nhau. Hàm này không chạy topo, không dựng gia phả và không chạy BFS.
+
+Facade trên được chia thành ba hàm nội bộ rõ trách nhiệm:
+
+```java
+ParseResult parse(String rawInput)
+GraphValidationResult validate(ParsedInput input)
+NormalizedInput normalize(ValidatedInput input)
+```
+
+| Tầng | Nhận vào | Trả về | Chỉ chịu trách nhiệm |
+|---|---|---|---|
+| `RawTextParser` | `String rawInput` | `ParseResult` | Đọc marker, dòng người, cạnh, query và tên; không kiểm tra duplicate, cycle hay enum. |
+| `ParsedInputValidator` | `ParsedInput` | `GraphValidationResult` | Kiểm tra nghiệp vụ theo thứ tự ưu tiên, gồm cả `SAME_GENDER_PARENTS`. |
+| `InputNormalizer` | `ValidatedInput` | `NormalizedInput` | Chuyển token hợp lệ thành `Gender`, `Direction`, domain graph và đúng loại query. |
+
+Quy tắc phụ huynh: một người vẫn có thể thiếu phụ huynh hoặc có nhiều hơn hai phụ huynh. Tuy nhiên, hai phụ huynh khác ID cùng `MALE`, hoặc cùng `FEMALE`, là `SAME_GENDER_PARENTS`. Phụ huynh `UNKNOWN` không tham gia phép kiểm tra này. `DIRECTED_CYCLE` và `DUPLICATE_EDGE` có mức ưu tiên cao hơn lỗi giới tính phụ huynh.
 
 ### 4.2. Phương Mai — sắp xếp topo
 
