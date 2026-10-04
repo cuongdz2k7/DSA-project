@@ -1,15 +1,20 @@
 package com.familygraph.familytree;
 
-import com.familygraph.model.familytree.*;
-import com.familygraph.model.graph.Gender;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.familygraph.model.familytree.FamilyNode;
+import com.familygraph.model.familytree.FamilyTreeResult;
+import com.familygraph.model.familytree.LabeledPerson;
+import com.familygraph.model.familytree.OrderedFamilyGraph;
+import com.familygraph.model.familytree.RelationLabel;
+import com.familygraph.model.familytree.RelationType;
+import com.familygraph.model.graph.Gender;
+
 public class LabelFamilyGraph {
-    public FamilyTreeResult labelFamilyGraph(OrderedFamilyGraph orderedFamilyGraph) {
-        List<LabeledPerson> labledPersonList = new ArrayList<>();
+    public FamilyTreeResult labelFamilyGraph(OrderedFamilyGraph orderedFamilyGraph) { 
+        List<LabeledPerson> labeledPersonList = new ArrayList<>();
 
         for (FamilyNode node : orderedFamilyGraph.nodes()) {
             List<RelationLabel> relations = new ArrayList<>();
@@ -22,13 +27,13 @@ public class LabelFamilyGraph {
             relations.sort(Comparator.comparingInt((RelationLabel r) -> Math.abs(r.generationOffset()))
                     .thenComparing(RelationLabel::code));
 
-            labledPersonList.add(new LabeledPerson(node.person(), relations));
+            labeledPersonList.add(new LabeledPerson(node.person(), relations));
         }
 
         return new FamilyTreeResult(
                 orderedFamilyGraph.query(),
                 orderedFamilyGraph.topoOrder(),
-                labledPersonList,
+                labeledPersonList,
                 orderedFamilyGraph.edges()
         );
     }
