@@ -30,7 +30,43 @@ NormalizedInput(FamilyGraph graph, ProjectQuery query)
 - `CheckRelationshipQuery.MAX_GENERATIONS` cố định bằng 3.
 - Nhóm 1 và nhóm 2 chỉ nhận object đã chuẩn hóa, không đọc raw input.
 
-## 2. Object kết quả kiểm tra input
+## 2. Object trung gian của pipeline input
+
+Các object dưới đây thuộc `com.familygraph.input.model` và chỉ được dùng nội bộ bởi nhóm 3:
+
+```java
+ParsedPerson(String id, String genderToken, String name)
+ParsedParentChildEdge(String parentId, String childId)
+ParsedFamilyGraph(
+    int declaredPersonCount,
+    List<ParsedPerson> persons,
+    int declaredEdgeCount,
+    List<ParsedParentChildEdge> edges
+)
+ParsedQuery(String type, List<String> arguments)
+ParsedInput(ParsedFamilyGraph graph, ParsedQuery query)
+ParseResult(boolean successful, ParsedInput data, ValidationError error)
+ValidatedInput(ParsedInput parsedInput)
+GraphValidationResult(boolean valid, ValidatedInput data, ValidationError error)
+```
+
+- `Parsed*` giữ nguyên token và thứ tự từ raw input, chưa phải domain model chính thức.
+- `ParseResult` chỉ báo lỗi cú pháp `MALFORMED_INPUT`.
+- `ValidatedInput` đánh dấu `ParsedInput` đã vượt qua toàn bộ quy tắc nghiệp vụ.
+- Collection trong các object trung gian được sao chép bằng `List.copyOf`.
+- Hai result chỉ có đúng một trạng thái: thành công có `data`, thất bại có `error`.
+
+Luồng nội bộ:
+
+```text
+String rawInput
+  -> RawTextParser.parse
+  -> ParsedInputValidator.validate
+  -> InputNormalizer.normalize
+  -> NormalizedInput
+```
+
+## 3. Object kết quả kiểm tra input
 
 ```java
 ValidationError(
@@ -51,7 +87,7 @@ ValidationResult(
 - `data` chỉ tồn tại khi `valid=true`; `error` chỉ tồn tại khi `valid=false`.
 - `cycle` chỉ có dữ liệu với `DIRECTED_CYCLE` và phải là đường khép kín.
 
-## 3. Object kết quả gia phả
+## 4. Object kết quả gia phả
 
 ### Kết quả topo
 
@@ -110,7 +146,7 @@ FamilyTreeResult(
 - `LabeledPerson` không chứa `level` hoặc `relationLevels`.
 - Dữ liệu không đạt đủ số đời chỉ trả phần tìm được, không tạo warning.
 
-## 4. Object kết quả kiểm tra ba đời
+## 5. Object kết quả kiểm tra ba đời
 
 ```java
 RelationshipPath(
@@ -136,10 +172,16 @@ RelationshipResult(
 - `evidencePersons` và `evidenceEdges` chứa dữ liệu cần để web vẽ bằng chứng.
 - Result không chứa warning hoặc trường độ sâu thực tế.
 
-## 5. Hợp đồng hàm
+## 6. Hợp đồng hàm
 
 ```java
 ValidationResult parseAndValidate(String rawInput)
+
+ParseResult parse(String rawInput)
+
+GraphValidationResult validate(ParsedInput input)
+
+NormalizedInput normalize(ValidatedInput input)
 
 TopoResult topologicalSort(FamilyGraph graph)
 
@@ -175,10 +217,11 @@ NormalizedInput
   -> RelationshipResult
 ```
 
-## 6. Ranh giới kiểm tra dữ liệu
+## 7. Ranh giới kiểm tra dữ liệu
 
 - Các `record` là object truyền dữ liệu; chúng chỉ sao chép collection bằng `List.copyOf`, không tự kiểm tra quy tắc nghiệp vụ.
-- Nhóm 3 kiểm tra ID, giới tính, số lượng bản ghi, cạnh, chu trình và query trong `parseAndValidate(rawInput)`, rồi trả `ValidationError` nếu có lỗi.
+- `RawTextParser` chỉ đọc cú pháp; `ParsedInputValidator` kiểm tra số lượng, ID, giới tính, cạnh, chu trình, giới tính phụ huynh và query; `InputNormalizer` chỉ chuyển dữ liệu hợp lệ sang domain model.
+- Hai phụ huynh khác ID cùng có giới tính xác định `MALE`, hoặc cùng `FEMALE`, cho một người sẽ trả `SAME_GENDER_PARENTS`. `UNKNOWN` không được dùng để kết luận lỗi này.
 - Nhóm 1 và nhóm 2 chỉ nhận `NormalizedInput` hợp lệ; kết quả do thuật toán tạo phải tuân theo hợp đồng này và được xác nhận bằng test của từng module.
 - `ValidationResult` vẫn bảo vệ hai trạng thái đối nghịch: thành công có `data`, thất bại có `error`.
 - Không module nào được sửa object do module trước trả về.

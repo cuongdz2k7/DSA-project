@@ -86,7 +86,7 @@ QUERY <queryType> <parameters>
 
 - Project chỉ mô hình hóa quan hệ huyết thống cha mẹ với con. Quan hệ kết hôn hoặc vợ chồng không tạo EDGE.
 
-- Không bắt buộc mỗi người phải có đúng hai phụ huynh hoặc phải có một phụ huynh MALE và một phụ huynh FEMALE. Dữ liệu có thể thiếu hoặc dùng UNKNOWN.
+- Không bắt buộc mỗi người phải có đúng hai phụ huynh. Dữ liệu có thể thiếu phụ huynh hoặc dùng `UNKNOWN`. Tuy nhiên, hai phụ huynh khác ID cùng có giới tính xác định `MALE`, hoặc cùng `FEMALE`, cho một người là dữ liệu không hợp lệ; phụ huynh `UNKNOWN` được bỏ qua khi kiểm tra quy tắc này.
 
 ##### Truy vấn gia phả
 
@@ -200,6 +200,7 @@ Dòng CYCLE chỉ xuất hiện với lỗi DIRECTED_CYCLE. Khi VALID là false,
 
 | ERROR_CODE | Ý nghĩa |
 |---|---|
+| MALFORMED_INPUT | Không đọc được raw Input theo đúng cấu trúc đã quy ước |
 | INVALID_COUNT | Số bản ghi không khớp PERSON_COUNT hoặc EDGE_COUNT |
 | DUPLICATE_ID | Một ID xuất hiện ở nhiều dòng PERSON |
 | INVALID_GENDER | gender không thuộc MALE, FEMALE hoặc UNKNOWN |
@@ -207,6 +208,8 @@ Dòng CYCLE chỉ xuất hiện với lỗi DIRECTED_CYCLE. Khi VALID là false,
 | DUPLICATE_EDGE | Một cạnh cha mẹ đến con bị lặp |
 | SELF_PARENT | Một người là cha hoặc mẹ trực tiếp của chính mình |
 | DIRECTED_CYCLE | Đồ thị có chu trình có hướng |
+| SAME_GENDER_PARENTS | Một người có hai phụ huynh khác ID cùng là MALE hoặc cùng là FEMALE; UNKNOWN không dùng để kết luận lỗi |
+| INVALID_QUERY_TYPE | Query không phải FAMILY_TREE hoặc CHECK_RELATIONSHIP |
 | INVALID_GENERATION | Số đời không phải số nguyên dương |
 | INVALID_DIRECTION | Hướng không thuộc ANCESTORS, DESCENDANTS hoặc BOTH |
 | SAME_PERSON_QUERY | Hai ID trong CHECK_RELATIONSHIP giống nhau |
@@ -352,7 +355,11 @@ Luồng xử lý thống nhất:
 ```text
 Raw Input
     ↓
-Nhóm 3 kiểm tra và chuẩn hóa
+RawTextParser đọc cú pháp thành ParsedInput
+    ↓
+ParsedInputValidator kiểm tra quy tắc thành ValidatedInput
+    ↓
+InputNormalizer tạo dữ liệu chính thức
     ↓
 NormalizedInput gồm FamilyGraph và Query
     ↓
@@ -687,6 +694,18 @@ Hàm chính:
 ValidationResult parseAndValidate(String rawInput)
 ```
 
+`RawInputParser` là facade và gọi ba tầng nội bộ:
+
+```java
+ParseResult parse(String rawInput)
+GraphValidationResult validate(ParsedInput input)
+NormalizedInput normalize(ValidatedInput input)
+```
+
+- `RawTextParser` chỉ đọc cú pháp và tạo các object `Parsed*`; token giới tính hoặc query chưa cần hợp lệ ở tầng này.
+- `ParsedInputValidator` kiểm tra toàn bộ quy tắc đồ thị và query, sau đó tạo `ValidatedInput`.
+- `InputNormalizer` chỉ chuyển dữ liệu đã hợp lệ thành `FamilyGraph`, `Person`, `ParentChildEdge` và `ProjectQuery` chính thức.
+
 **Tham số**
 
 - `rawInput`: toàn bộ dữ liệu người, cạnh và một truy vấn ở dạng text.
@@ -718,8 +737,9 @@ Nhóm 3 kiểm tra:
 - Giá trị giới tính, hướng truy vấn và số đời.
 - Cạnh tự nối và hai ID giống nhau trong `CHECK_RELATIONSHIP`.
 - Chu trình có hướng.
+- Hai phụ huynh khác ID cùng có giới tính xác định `MALE`, hoặc cùng `FEMALE`, của một người.
 
-Nhóm 3 chỉ kiểm tra lỗi cấu trúc. Không từ chối dữ liệu chỉ vì một người có hơn hai phụ huynh hoặc có hai phụ huynh cùng giới tính; mô hình hiện tại không có đủ thông tin để đưa ra kết luận sinh học hoặc pháp lý.
+Một người vẫn có thể thiếu phụ huynh hoặc có nhiều hơn hai phụ huynh nếu không vi phạm quy tắc giới tính trên. Các phụ huynh `UNKNOWN` bị bỏ qua vì không đủ dữ liệu để kết luận. Nếu dữ liệu đồng thời có nhiều lỗi, validator trả một lỗi theo thứ tự ưu tiên; `DUPLICATE_EDGE` và `DIRECTED_CYCLE` được kiểm tra trước `SAME_GENDER_PARENTS`.
 
 ### Trách nhiệm kiểm thử
 
