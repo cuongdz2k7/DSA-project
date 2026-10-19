@@ -1,0 +1,47 @@
+{
+  "inputFile": "invalid_count.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 2,
+        "persons": [
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 0,
+        "edges": []
+      },
+      "query": {
+        "type": "FAMILY_TREE",
+        "arguments": [
+          "P01",
+          "1",
+          "BOTH"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "INVALID_COUNT",
+      "detail": "PERSON_COUNT expected 2 but found 1",
+      "cycle": []
+    }
+  },
+  "validationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "INVALID_COUNT",
+      "detail": "PERSON_COUNT expected 2 but found 1",
+      "cycle": []
+    }
+  }
+}

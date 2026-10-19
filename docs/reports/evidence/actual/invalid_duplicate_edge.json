@@ -1,0 +1,70 @@
+{
+  "inputFile": "invalid_duplicate_edge.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 3,
+        "persons": [
+          {
+            "id": "P00",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "genderToken": "UNKNOWN",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 3,
+        "edges": [
+          {
+            "parentId": "P00",
+            "childId": "P02"
+          },
+          {
+            "parentId": "P00",
+            "childId": "P02"
+          },
+          {
+            "parentId": "P01",
+            "childId": "P02"
+          }
+        ]
+      },
+      "query": {
+        "type": "FAMILY_TREE",
+        "arguments": [
+          "P02",
+          "2",
+          "ANCESTORS"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "DUPLICATE_EDGE",
+      "detail": "P00 P02",
+      "cycle": []
+    }
+  },
+  "validationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "DUPLICATE_EDGE",
+      "detail": "P00 P02",
+      "cycle": []
+    }
+  }
+}

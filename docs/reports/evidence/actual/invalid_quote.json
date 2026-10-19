@@ -1,0 +1,21 @@
+{
+  "inputFile": "invalid_quote.txt",
+  "parseResult": {
+    "successful": false,
+    "data": null,
+    "error": {
+      "code": "MALFORMED_INPUT",
+      "detail": "line 2: invalid PERSON name",
+      "cycle": []
+    }
+  },
+  "validationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "MALFORMED_INPUT",
+      "detail": "line 2: invalid PERSON name",
+      "cycle": []
+    }
+  }
+}

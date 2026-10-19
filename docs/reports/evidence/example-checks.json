@@ -1,0 +1,544 @@
+{
+  "observed": 21,
+  "matchesSpecification": 19,
+  "knownDeviations": 2,
+  "checks": [
+    {
+      "fixture": "family_tree_descendant_multiple_levels",
+      "status": "matches_specification",
+      "topo": [
+        "P10",
+        "P11",
+        "P12",
+        "P13"
+      ],
+      "levels": {
+        "P10": [
+          0
+        ],
+        "P11": [
+          -1
+        ],
+        "P12": [
+          -2
+        ],
+        "P13": [
+          -1,
+          -3
+        ]
+      },
+      "codes": {
+        "P10": [
+          "SELF"
+        ],
+        "P11": [
+          "SON"
+        ],
+        "P12": [
+          "GRANDDAUGHTER"
+        ],
+        "P13": [
+          "SON",
+          "GREAT_GRANDSON_1"
+        ]
+      }
+    },
+    {
+      "fixture": "family_tree_diamond",
+      "status": "matches_specification",
+      "topo": [
+        "A",
+        "B",
+        "C",
+        "T"
+      ],
+      "levels": {
+        "A": [
+          2
+        ],
+        "B": [
+          1
+        ],
+        "C": [
+          1
+        ],
+        "T": [
+          0
+        ]
+      },
+      "codes": {
+        "A": [
+          "GRANDPARENT"
+        ],
+        "B": [
+          "FATHER"
+        ],
+        "C": [
+          "MOTHER"
+        ],
+        "T": [
+          "SELF"
+        ]
+      }
+    },
+    {
+      "fixture": "family_tree_example",
+      "status": "matches_specification",
+      "topo": [
+        "P01",
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "levels": {
+        "P01": [
+          1
+        ],
+        "P02": [
+          1
+        ],
+        "P03": [
+          0
+        ],
+        "P04": [
+          -1
+        ]
+      },
+      "codes": {
+        "P01": [
+          "FATHER"
+        ],
+        "P02": [
+          "MOTHER"
+        ],
+        "P03": [
+          "SELF"
+        ],
+        "P04": [
+          "DAUGHTER"
+        ]
+      }
+    },
+    {
+      "fixture": "family_tree_multiple_levels",
+      "status": "matches_specification",
+      "topo": [
+        "P10",
+        "P11",
+        "P12",
+        "P13"
+      ],
+      "levels": {
+        "P10": [
+          1,
+          3
+        ],
+        "P11": [
+          2
+        ],
+        "P12": [
+          1
+        ],
+        "P13": [
+          0
+        ]
+      },
+      "codes": {
+        "P10": [
+          "FATHER",
+          "GREAT_GRANDFATHER_1"
+        ],
+        "P11": [
+          "GRANDFATHER"
+        ],
+        "P12": [
+          "MOTHER"
+        ],
+        "P13": [
+          "SELF"
+        ]
+      }
+    },
+    {
+      "fixture": "family_tree_one_generation",
+      "status": "matches_specification",
+      "topo": [
+        "P03"
+      ],
+      "levels": {
+        "P03": [
+          0
+        ]
+      },
+      "codes": {
+        "P03": [
+          "SELF"
+        ]
+      }
+    },
+    {
+      "fixture": "family_tree_union_edges",
+      "status": "matches_specification",
+      "topo": [
+        "A",
+        "B",
+        "C",
+        "T"
+      ],
+      "levels": {
+        "A": [
+          1,
+          2
+        ],
+        "B": [
+          1,
+          2
+        ],
+        "C": [
+          1
+        ],
+        "T": [
+          0
+        ]
+      },
+      "codes": {
+        "A": [
+          "PARENT",
+          "GRANDPARENT"
+        ],
+        "B": [
+          "PARENT",
+          "GRANDPARENT"
+        ],
+        "C": [
+          "PARENT"
+        ],
+        "T": [
+          "SELF"
+        ]
+      }
+    },
+    {
+      "fixture": "invalid_count",
+      "status": "matches_specification",
+      "error": {
+        "code": "INVALID_COUNT",
+        "detail": "PERSON_COUNT expected 2 but found 1",
+        "cycle": []
+      }
+    },
+    {
+      "fixture": "invalid_cycle_example",
+      "status": "matches_specification",
+      "error": {
+        "code": "DIRECTED_CYCLE",
+        "detail": "P01 -> P02 -> P03 -> P01",
+        "cycle": [
+          "P01",
+          "P02",
+          "P03",
+          "P01"
+        ]
+      }
+    },
+    {
+      "fixture": "invalid_duplicate_edge",
+      "status": "matches_specification",
+      "error": {
+        "code": "DUPLICATE_EDGE",
+        "detail": "P00 P02",
+        "cycle": []
+      }
+    },
+    {
+      "fixture": "invalid_parent_gender",
+      "status": "matches_specification",
+      "error": {
+        "code": "SAME_GENDER_PARENTS",
+        "detail": "child=P03 parents=P01,P02 gender=MALE",
+        "cycle": []
+      }
+    },
+    {
+      "fixture": "invalid_quote",
+      "status": "matches_specification",
+      "error": {
+        "code": "MALFORMED_INPUT",
+        "detail": "line 2: invalid PERSON name",
+        "cycle": []
+      }
+    },
+    {
+      "fixture": "invalid_unknown_id",
+      "status": "matches_specification",
+      "error": {
+        "code": "UNKNOWN_ID",
+        "detail": "P99",
+        "cycle": []
+      }
+    },
+    {
+      "fixture": "relationship_direct",
+      "status": "matches_specification",
+      "expectedCommon": [
+        "P01"
+      ],
+      "actualCommon": [
+        "P01"
+      ],
+      "expectedPaths": [
+        [
+          "P01"
+        ],
+        [
+          "P02",
+          "P01"
+        ]
+      ],
+      "actualPaths": [
+        [
+          "P01"
+        ],
+        [
+          "P02",
+          "P01"
+        ]
+      ]
+    },
+    {
+      "fixture": "relationship_disconnected",
+      "status": "matches_specification",
+      "expectedCommon": [],
+      "actualCommon": [],
+      "expectedPaths": [],
+      "actualPaths": []
+    },
+    {
+      "fixture": "relationship_example",
+      "status": "matches_specification",
+      "expectedCommon": [
+        "P01",
+        "P02"
+      ],
+      "actualCommon": [
+        "P01",
+        "P02"
+      ],
+      "expectedPaths": [
+        [
+          "P05",
+          "P03",
+          "P01"
+        ],
+        [
+          "P06",
+          "P04",
+          "P01"
+        ],
+        [
+          "P05",
+          "P03",
+          "P02"
+        ],
+        [
+          "P06",
+          "P04",
+          "P02"
+        ]
+      ],
+      "actualPaths": [
+        [
+          "P05",
+          "P03",
+          "P01"
+        ],
+        [
+          "P06",
+          "P04",
+          "P01"
+        ],
+        [
+          "P05",
+          "P03",
+          "P02"
+        ],
+        [
+          "P06",
+          "P04",
+          "P02"
+        ]
+      ]
+    },
+    {
+      "fixture": "relationship_multiple_paths",
+      "status": "matches_specification",
+      "expectedCommon": [
+        "P00"
+      ],
+      "actualCommon": [
+        "P00"
+      ],
+      "expectedPaths": [
+        [
+          "P01",
+          "P10",
+          "P00"
+        ],
+        [
+          "P01",
+          "P11",
+          "P00"
+        ],
+        [
+          "P02",
+          "P20",
+          "P00"
+        ],
+        [
+          "P02",
+          "P21",
+          "P00"
+        ]
+      ],
+      "actualPaths": [
+        [
+          "P01",
+          "P10",
+          "P00"
+        ],
+        [
+          "P01",
+          "P11",
+          "P00"
+        ],
+        [
+          "P02",
+          "P20",
+          "P00"
+        ],
+        [
+          "P02",
+          "P21",
+          "P00"
+        ]
+      ]
+    },
+    {
+      "fixture": "relationship_outside_boundary",
+      "status": "matches_specification",
+      "expectedCommon": [],
+      "actualCommon": [],
+      "expectedPaths": [],
+      "actualPaths": []
+    },
+    {
+      "fixture": "relationship_same_gender_bug",
+      "status": "known_gender_deviation",
+      "expectedCommon": [
+        "P00"
+      ],
+      "actualCommon": [],
+      "expectedPaths": [
+        [
+          "P01",
+          "P00"
+        ],
+        [
+          "P02",
+          "P00"
+        ]
+      ],
+      "actualPaths": []
+    },
+    {
+      "fixture": "relationship_short_and_long",
+      "status": "matches_specification",
+      "expectedCommon": [
+        "P00"
+      ],
+      "actualCommon": [
+        "P00"
+      ],
+      "expectedPaths": [
+        [
+          "P01",
+          "P00"
+        ],
+        [
+          "P01",
+          "P10",
+          "P00"
+        ],
+        [
+          "P02",
+          "P00"
+        ]
+      ],
+      "actualPaths": [
+        [
+          "P01",
+          "P00"
+        ],
+        [
+          "P01",
+          "P10",
+          "P00"
+        ],
+        [
+          "P02",
+          "P00"
+        ]
+      ]
+    },
+    {
+      "fixture": "relationship_unknown_gender_bug",
+      "status": "known_gender_deviation",
+      "expectedCommon": [
+        "P00"
+      ],
+      "actualCommon": [],
+      "expectedPaths": [
+        [
+          "P01",
+          "P00"
+        ],
+        [
+          "P02",
+          "P00"
+        ]
+      ],
+      "actualPaths": []
+    },
+    {
+      "fixture": "topo_fifo",
+      "status": "matches_specification",
+      "topo": [
+        "A",
+        "C",
+        "B"
+      ],
+      "levels": {
+        "A": [
+          0
+        ],
+        "C": [
+          -1
+        ],
+        "B": [
+          -1
+        ]
+      },
+      "codes": {
+        "A": [
+          "SELF"
+        ],
+        "C": [
+          "CHILD"
+        ],
+        "B": [
+          "CHILD"
+        ]
+      }
+    }
+  ]
+}

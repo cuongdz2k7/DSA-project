@@ -1,0 +1,150 @@
+{
+  "inputFile": "relationship_direct.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 2,
+        "persons": [
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "genderToken": "FEMALE",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 1,
+        "edges": [
+          {
+            "parentId": "P01",
+            "childId": "P02"
+          }
+        ]
+      },
+      "query": {
+        "type": "CHECK_RELATIONSHIP",
+        "arguments": [
+          "P01",
+          "P02"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": true,
+    "data": {
+      "parsedInput": {
+        "graph": {
+          "declaredPersonCount": 2,
+          "persons": [
+            {
+              "id": "P01",
+              "genderToken": "MALE",
+              "name": ""
+            },
+            {
+              "id": "P02",
+              "genderToken": "FEMALE",
+              "name": ""
+            }
+          ],
+          "declaredEdgeCount": 1,
+          "edges": [
+            {
+              "parentId": "P01",
+              "childId": "P02"
+            }
+          ]
+        },
+        "query": {
+          "type": "CHECK_RELATIONSHIP",
+          "arguments": [
+            "P01",
+            "P02"
+          ]
+        }
+      }
+    },
+    "error": null
+  },
+  "validationResult": {
+    "valid": true,
+    "data": {
+      "graph": {
+        "persons": [
+          {
+            "id": "P01",
+            "gender": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "gender": "FEMALE",
+            "name": ""
+          }
+        ],
+        "edges": [
+          {
+            "parentId": "P01",
+            "childId": "P02"
+          }
+        ]
+      },
+      "query": {
+        "firstPersonId": "P01",
+        "secondPersonId": "P02"
+      }
+    },
+    "error": null
+  },
+  "relationshipResult": {
+    "query": {
+      "firstPersonId": "P01",
+      "secondPersonId": "P02"
+    },
+    "commonAncestorIds": [
+      "P01"
+    ],
+    "paths": [
+      {
+        "sourceId": "P01",
+        "ancestorId": "P01",
+        "nodeIds": [
+          "P01"
+        ]
+      },
+      {
+        "sourceId": "P02",
+        "ancestorId": "P01",
+        "nodeIds": [
+          "P02",
+          "P01"
+        ]
+      }
+    ],
+    "evidencePersons": [
+      {
+        "id": "P01",
+        "gender": "MALE",
+        "name": ""
+      },
+      {
+        "id": "P02",
+        "gender": "FEMALE",
+        "name": ""
+      }
+    ],
+    "evidenceEdges": [
+      {
+        "parentId": "P01",
+        "childId": "P02"
+      }
+    ]
+  },
+  "related": true
+}

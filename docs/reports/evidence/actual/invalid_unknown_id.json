@@ -1,0 +1,52 @@
+{
+  "inputFile": "invalid_unknown_id.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 1,
+        "persons": [
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 1,
+        "edges": [
+          {
+            "parentId": "P99",
+            "childId": "P01"
+          }
+        ]
+      },
+      "query": {
+        "type": "FAMILY_TREE",
+        "arguments": [
+          "P88",
+          "1",
+          "BOTH"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "UNKNOWN_ID",
+      "detail": "P99",
+      "cycle": []
+    }
+  },
+  "validationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "UNKNOWN_ID",
+      "detail": "P99",
+      "cycle": []
+    }
+  }
+}

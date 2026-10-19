@@ -1,0 +1,21 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Kiến trúc hiện có và ranh giới tích hợp";
+  "raw" -> "parse" [color="#64748b"];
+  "parse" -> "validate" [color="#64748b"];
+  "validate" -> "normalize" [color="#64748b"];
+  "validate" -> "failure" [color="#64748b"];
+  "normalize" -> "family" [color="#64748b",style="dashed"];
+  "normalize" -> "relation" [color="#64748b",style="dashed"];
+  "family" -> "output" [color="#64748b",style="dashed"];
+  "relation" -> "output" [color="#64748b",style="dashed"];
+  "raw" [label="RawInputParser\nString → ValidationResult",fillcolor="#e0f2fe",fontcolor="#172b4d"];
+  "parse" [label="RawTextParser\nParsedInput / lỗi cú pháp",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "validate" [label="ParsedInputValidator\nDFS + parent rule + query",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "normalize" [label="InputNormalizer\nNormalizedInput",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "failure" [label="ValidationError\nDừng trước truy vấn",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "family" [label="FamilyTreePipeline\nKahn → view → labels",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "relation" [label="RelationshipChecker\nAncestor paths → evidence",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "output" [label="app / output / web\nChưa triển khai trong checkout",fillcolor="#e2e8f0",fontcolor="#172b4d"];
+}

@@ -1,0 +1,11 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="DIRECTED_CYCLE — Input bị từ chối";
+  "P01" -> "P02" [color="#64748b"];
+  "P02" -> "P03" [color="#64748b"];
+  "P03" -> "P01" [color="#b91c1c"];
+  "P01" [label="P01\nVISITING, index 0",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "P02" [label="P02\nVISITING, index 1",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "P03" [label="P03\nVISITING, index 2",fillcolor="#fee2e2",fontcolor="#172b4d"];
+}

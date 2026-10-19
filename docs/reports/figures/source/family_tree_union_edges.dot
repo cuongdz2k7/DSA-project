@@ -1,0 +1,15 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Hợp cạnh khác với mọi đường ghép trong biên — k=3";
+  "A" -> "B" [color="#64748b"];
+  "A" -> "C" [color="#64748b"];
+  "A" -> "T" [color="#64748b"];
+  "B" -> "C" [color="#64748b"];
+  "B" -> "T" [color="#64748b"];
+  "C" -> "T" [color="#64748b"];
+  "A" [label="A | UNKNOWN\nlevels = [1, 2]\nPARENT\nGRANDPARENT",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "B" [label="B | UNKNOWN\nlevels = [1, 2]\nPARENT\nGRANDPARENT",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "C" [label="C | UNKNOWN\nlevels = [1]\nPARENT",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "T" [label="T | UNKNOWN\nlevels = [0]\nSELF",fillcolor="#1e40af",fontcolor="#ffffff"];
+}

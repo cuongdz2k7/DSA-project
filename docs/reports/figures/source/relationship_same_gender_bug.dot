@@ -1,0 +1,10 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Phản ví dụ: expected RELATED true, actual false";
+  "P00" -> "P01" [color="#64748b"];
+  "P00" -> "P02" [color="#64748b"];
+  "P00" [label="P00 | MALE\nCommon ancestor theo input",fillcolor="#fef3c7",fontcolor="#172b4d"];
+  "P01" [label="P01 | MALE\nSource 1",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "P02" [label="P02 | MALE\nSource 2",fillcolor="#fee2e2",fontcolor="#172b4d"];
+}
