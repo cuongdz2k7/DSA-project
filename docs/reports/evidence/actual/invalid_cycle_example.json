@@ -1,0 +1,80 @@
+{
+  "inputFile": "invalid_cycle_example.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 3,
+        "persons": [
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "genderToken": "FEMALE",
+            "name": ""
+          },
+          {
+            "id": "P03",
+            "genderToken": "MALE",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 3,
+        "edges": [
+          {
+            "parentId": "P01",
+            "childId": "P02"
+          },
+          {
+            "parentId": "P02",
+            "childId": "P03"
+          },
+          {
+            "parentId": "P03",
+            "childId": "P01"
+          }
+        ]
+      },
+      "query": {
+        "type": "FAMILY_TREE",
+        "arguments": [
+          "P03",
+          "3",
+          "ANCESTORS"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "DIRECTED_CYCLE",
+      "detail": "P01 -> P02 -> P03 -> P01",
+      "cycle": [
+        "P01",
+        "P02",
+        "P03",
+        "P01"
+      ]
+    }
+  },
+  "validationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "DIRECTED_CYCLE",
+      "detail": "P01 -> P02 -> P03 -> P01",
+      "cycle": [
+        "P01",
+        "P02",
+        "P03",
+        "P01"
+      ]
+    }
+  }
+}

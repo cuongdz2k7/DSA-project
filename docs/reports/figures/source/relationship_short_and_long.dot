@@ -1,0 +1,16 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Ba PATH result: độ dài 1, 2 và 1";
+  "panel0_P00" -> "panel0_P01" [color="#2563eb"];
+  "panel1_P10" -> "panel1_P01" [color="#2563eb"];
+  "panel1_P00" -> "panel1_P10" [color="#2563eb"];
+  "panel2_P00" -> "panel2_P02" [color="#15803d"];
+  "panel0_P01" [label="P01\nSOURCE",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "panel0_P00" [label="P00\nCOMMON",fillcolor="#fef3c7",fontcolor="#172b4d"];
+  "panel1_P01" [label="P01\nSOURCE",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "panel1_P10" [label="P10\nTrung gian",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "panel1_P00" [label="P00\nCOMMON",fillcolor="#fef3c7",fontcolor="#172b4d"];
+  "panel2_P02" [label="P02\nSOURCE",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "panel2_P00" [label="P00\nCOMMON",fillcolor="#fef3c7",fontcolor="#172b4d"];
+}

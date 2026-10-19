@@ -1,0 +1,101 @@
+{
+  "inputFile": "relationship_disconnected.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 2,
+        "persons": [
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "genderToken": "FEMALE",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 0,
+        "edges": []
+      },
+      "query": {
+        "type": "CHECK_RELATIONSHIP",
+        "arguments": [
+          "P01",
+          "P02"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": true,
+    "data": {
+      "parsedInput": {
+        "graph": {
+          "declaredPersonCount": 2,
+          "persons": [
+            {
+              "id": "P01",
+              "genderToken": "MALE",
+              "name": ""
+            },
+            {
+              "id": "P02",
+              "genderToken": "FEMALE",
+              "name": ""
+            }
+          ],
+          "declaredEdgeCount": 0,
+          "edges": []
+        },
+        "query": {
+          "type": "CHECK_RELATIONSHIP",
+          "arguments": [
+            "P01",
+            "P02"
+          ]
+        }
+      }
+    },
+    "error": null
+  },
+  "validationResult": {
+    "valid": true,
+    "data": {
+      "graph": {
+        "persons": [
+          {
+            "id": "P01",
+            "gender": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "gender": "FEMALE",
+            "name": ""
+          }
+        ],
+        "edges": []
+      },
+      "query": {
+        "firstPersonId": "P01",
+        "secondPersonId": "P02"
+      }
+    },
+    "error": null
+  },
+  "relationshipResult": {
+    "query": {
+      "firstPersonId": "P01",
+      "secondPersonId": "P02"
+    },
+    "commonAncestorIds": [],
+    "paths": [],
+    "evidencePersons": [],
+    "evidenceEdges": []
+  },
+  "related": false
+}

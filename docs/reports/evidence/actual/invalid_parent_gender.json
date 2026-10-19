@@ -1,0 +1,66 @@
+{
+  "inputFile": "invalid_parent_gender.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 3,
+        "persons": [
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P03",
+            "genderToken": "UNKNOWN",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 2,
+        "edges": [
+          {
+            "parentId": "P01",
+            "childId": "P03"
+          },
+          {
+            "parentId": "P02",
+            "childId": "P03"
+          }
+        ]
+      },
+      "query": {
+        "type": "FAMILY_TREE",
+        "arguments": [
+          "P03",
+          "2",
+          "ANCESTORS"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "SAME_GENDER_PARENTS",
+      "detail": "child=P03 parents=P01,P02 gender=MALE",
+      "cycle": []
+    }
+  },
+  "validationResult": {
+    "valid": false,
+    "data": null,
+    "error": {
+      "code": "SAME_GENDER_PARENTS",
+      "detail": "child=P03 parents=P01,P02 gender=MALE",
+      "cycle": []
+    }
+  }
+}

@@ -1,0 +1,18 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Ancestor chung có trong input nhưng nằm ngoài cửa sổ";
+  "P01" -> "P02" [color="#64748b",style="dashed"];
+  "P02" -> "P03" [color="#64748b"];
+  "P03" -> "P04" [color="#64748b"];
+  "P01" -> "P06" [color="#64748b",style="dashed"];
+  "P06" -> "P07" [color="#64748b"];
+  "P07" -> "P08" [color="#64748b"];
+  "P01" [label="P01\ndepth 3 — ngoài biên",fillcolor="#e2e8f0",fontcolor="#172b4d"];
+  "P02" [label="P02\ndepth 2",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P03" [label="P03\ndepth 1",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P04" [label="P04\ndepth 0",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P06" [label="P06\ndepth 2",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "P07" [label="P07\ndepth 1",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "P08" [label="P08\ndepth 0",fillcolor="#dcfce7",fontcolor="#172b4d"];
+}

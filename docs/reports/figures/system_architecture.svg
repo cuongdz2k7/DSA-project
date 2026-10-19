@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="1100" viewBox="0 0 1160 1100" role="img">
+<title>Kiến trúc hiện có và ranh giới tích hợp</title><desc>Shared model dùng chung; query dispatch chỉ do caller kiểm chứng thực hiện, chưa có production app.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#64748b"/></marker></defs>
+<rect width="100%" height="100%" rx="18" fill="#f8fafc"/>
+<g font-family="Arial, DejaVu Sans, sans-serif">
+<text x="40" y="45" text-anchor="start" font-size="25" fill="#172b4d"><tspan x="40" dy="0">Kiến trúc hiện có và ranh giới tích hợp</tspan></text>
+<text x="40" y="78" text-anchor="start" font-size="16" fill="#526479"><tspan x="40" dy="0">Shared model dùng chung; query dispatch chỉ do caller kiểm chứng thực hiện, chưa có production app.</tspan></text>
+<path d="M560.0,212.5 L560.0,257.5" fill="none" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M560.0,342.5 L560.0,387.5" fill="none" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M560.0,472.5 L560.0,517.5" fill="none" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M390.0,430.0 L310.0,430.0" fill="none" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M490.9375,602.5 L369.0625,677.5" fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<path d="M637.03125,602.5 L772.96875,677.5" fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<path d="M355.25,762.5 L501.5,875.0" fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<path d="M788.375,762.5 L625.25,875.0" fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<rect x="390.0" y="127.5" width="340" height="85" rx="12" fill="#e0f2fe" stroke="#94a3b8" stroke-width="2"/>
+<text x="560" y="163.66666666666666" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="560" dy="0">RawInputParser</tspan><tspan x="560" dy="24">String → ValidationResult</tspan></text>
+<rect x="390.0" y="257.5" width="340" height="85" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+<text x="560" y="293.6666666666667" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="560" dy="0">RawTextParser</tspan><tspan x="560" dy="24">ParsedInput / lỗi cú pháp</tspan></text>
+<rect x="390.0" y="387.5" width="340" height="85" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+<text x="560" y="423.6666666666667" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="560" dy="0">ParsedInputValidator</tspan><tspan x="560" dy="24">DFS + parent rule + query</tspan></text>
+<rect x="390.0" y="517.5" width="340" height="85" rx="12" fill="#dcfce7" stroke="#94a3b8" stroke-width="2"/>
+<text x="560" y="553.6666666666666" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="560" dy="0">InputNormalizer</tspan><tspan x="560" dy="24">NormalizedInput</tspan></text>
+<rect x="30.0" y="387.5" width="280" height="85" rx="12" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+<text x="170" y="423.6666666666667" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="170" dy="0">ValidationError</tspan><tspan x="170" dy="24">Dừng trước truy vấn</tspan></text>
+<rect x="120.0" y="677.5" width="360" height="85" rx="12" fill="#dbeafe" stroke="#94a3b8" stroke-width="2"/>
+<text x="300" y="713.6666666666666" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="300" dy="0">FamilyTreePipeline</tspan><tspan x="300" dy="24">Kahn → view → labels</tspan></text>
+<rect x="665.0" y="677.5" width="370" height="85" rx="12" fill="#dcfce7" stroke="#94a3b8" stroke-width="2"/>
+<text x="850" y="713.6666666666666" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="850" dy="0">RelationshipChecker</tspan><tspan x="850" dy="24">Ancestor paths → evidence</tspan></text>
+<rect x="340.0" y="875.0" width="440" height="90" rx="12" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="560" y="913.6666666666666" text-anchor="middle" font-size="17" fill="#172b4d"><tspan x="560" dy="0">app / output / web</tspan><tspan x="560" dy="24">Chưa triển khai trong checkout</tspan></text>
+<rect x="40" y="1009" width="18" height="18" rx="3" fill="#2563eb"/>
+<text x="70" y="1022" text-anchor="start" font-size="15" fill="#526479"><tspan x="70" dy="0">Nét liền: lời gọi/luồng trong module đã có</tspan></text>
+<rect x="40" y="1033" width="18" height="18" rx="3" fill="#94a3b8"/>
+<text x="70" y="1046" text-anchor="start" font-size="15" fill="#526479"><tspan x="70" dy="0">Nét đứt: caller cần nối hoặc thành phần còn thiếu</tspan></text>
+</g></svg>

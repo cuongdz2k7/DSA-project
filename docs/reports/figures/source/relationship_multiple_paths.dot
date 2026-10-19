@@ -1,0 +1,20 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="P01 / P02 — mọi đường hai cạnh tới P00";
+  "P00" -> "P10" [color="#2563eb"];
+  "P00" -> "P11" [color="#2563eb"];
+  "P00" -> "P20" [color="#15803d"];
+  "P00" -> "P21" [color="#15803d"];
+  "P10" -> "P01" [color="#2563eb"];
+  "P11" -> "P01" [color="#2563eb"];
+  "P20" -> "P02" [color="#15803d"];
+  "P21" -> "P02" [color="#15803d"];
+  "P00" [label="P00 | MALE\nCOMMON ANCESTOR",fillcolor="#fef3c7",fontcolor="#172b4d"];
+  "P10" [label="P10 | MALE\nVùng source 1",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P11" [label="P11 | FEMALE\nVùng source 1",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P20" [label="P20 | MALE\nVùng source 2",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "P21" [label="P21 | FEMALE\nVùng source 2",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "P01" [label="P01 | MALE\nVùng source 1",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P02" [label="P02 | FEMALE\nVùng source 2",fillcolor="#dcfce7",fontcolor="#172b4d"];
+}

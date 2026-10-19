@@ -1,0 +1,14 @@
+{
+  "markdownFiles": 7,
+  "localLinksAndAnchorsChecked": 260,
+  "brokenLinks": [],
+  "sourceSnippetsMatched": 6,
+  "protectedFilesHashMatched": 58,
+  "svgFilesParsed": 12,
+  "mermaidSourceBlocks": 13,
+  "mermaidVerification": "Source reviewed for flow and syntax; not rendered with a Mermaid engine in this environment.",
+  "observedExamples": 21,
+  "matchesSpecification": 19,
+  "knownBusinessDeviations": 2,
+  "note": "Artifact checks passing do not mean all business behavior is correct; two known gender deviations are preserved."
+}

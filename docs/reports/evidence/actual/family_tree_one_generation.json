@@ -1,0 +1,229 @@
+{
+  "inputFile": "family_tree_one_generation.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 4,
+        "persons": [
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": "Nam"
+          },
+          {
+            "id": "P02",
+            "genderToken": "FEMALE",
+            "name": "Hoa"
+          },
+          {
+            "id": "P03",
+            "genderToken": "MALE",
+            "name": "Cường"
+          },
+          {
+            "id": "P04",
+            "genderToken": "FEMALE",
+            "name": "An"
+          }
+        ],
+        "declaredEdgeCount": 3,
+        "edges": [
+          {
+            "parentId": "P01",
+            "childId": "P03"
+          },
+          {
+            "parentId": "P02",
+            "childId": "P03"
+          },
+          {
+            "parentId": "P03",
+            "childId": "P04"
+          }
+        ]
+      },
+      "query": {
+        "type": "FAMILY_TREE",
+        "arguments": [
+          "P03",
+          "1",
+          "BOTH"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": true,
+    "data": {
+      "parsedInput": {
+        "graph": {
+          "declaredPersonCount": 4,
+          "persons": [
+            {
+              "id": "P01",
+              "genderToken": "MALE",
+              "name": "Nam"
+            },
+            {
+              "id": "P02",
+              "genderToken": "FEMALE",
+              "name": "Hoa"
+            },
+            {
+              "id": "P03",
+              "genderToken": "MALE",
+              "name": "Cường"
+            },
+            {
+              "id": "P04",
+              "genderToken": "FEMALE",
+              "name": "An"
+            }
+          ],
+          "declaredEdgeCount": 3,
+          "edges": [
+            {
+              "parentId": "P01",
+              "childId": "P03"
+            },
+            {
+              "parentId": "P02",
+              "childId": "P03"
+            },
+            {
+              "parentId": "P03",
+              "childId": "P04"
+            }
+          ]
+        },
+        "query": {
+          "type": "FAMILY_TREE",
+          "arguments": [
+            "P03",
+            "1",
+            "BOTH"
+          ]
+        }
+      }
+    },
+    "error": null
+  },
+  "validationResult": {
+    "valid": true,
+    "data": {
+      "graph": {
+        "persons": [
+          {
+            "id": "P01",
+            "gender": "MALE",
+            "name": "Nam"
+          },
+          {
+            "id": "P02",
+            "gender": "FEMALE",
+            "name": "Hoa"
+          },
+          {
+            "id": "P03",
+            "gender": "MALE",
+            "name": "Cường"
+          },
+          {
+            "id": "P04",
+            "gender": "FEMALE",
+            "name": "An"
+          }
+        ],
+        "edges": [
+          {
+            "parentId": "P01",
+            "childId": "P03"
+          },
+          {
+            "parentId": "P02",
+            "childId": "P03"
+          },
+          {
+            "parentId": "P03",
+            "childId": "P04"
+          }
+        ]
+      },
+      "query": {
+        "targetId": "P03",
+        "numberOfGenerations": 1,
+        "direction": "BOTH"
+      }
+    },
+    "error": null
+  },
+  "topoResult": {
+    "topoOrder": [
+      "P01",
+      "P02",
+      "P03",
+      "P04"
+    ]
+  },
+  "orderedFamilyGraph": {
+    "query": {
+      "targetId": "P03",
+      "numberOfGenerations": 1,
+      "direction": "BOTH"
+    },
+    "topoOrder": [
+      "P03"
+    ],
+    "nodes": [
+      {
+        "person": {
+          "id": "P03",
+          "gender": "MALE",
+          "name": "Cường"
+        },
+        "relationLevels": [
+          0
+        ]
+      }
+    ],
+    "edges": []
+  },
+  "familyTreeResult": {
+    "query": {
+      "targetId": "P03",
+      "numberOfGenerations": 1,
+      "direction": "BOTH"
+    },
+    "topoOrder": [
+      "P03"
+    ],
+    "persons": [
+      {
+        "person": {
+          "id": "P03",
+          "gender": "MALE",
+          "name": "Cường"
+        },
+        "relations": [
+          {
+            "type": "SELF",
+            "greatDegree": 0
+          }
+        ]
+      }
+    ],
+    "edges": []
+  },
+  "relationCodesById": {
+    "P03": [
+      "SELF"
+    ]
+  },
+  "generationOffsetsById": {
+    "P03": [
+      0
+    ]
+  }
+}

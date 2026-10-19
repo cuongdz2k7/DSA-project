@@ -1,0 +1,12 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Gia phả P03 — k=2, BOTH";
+  "P01" -> "P03" [color="#64748b"];
+  "P02" -> "P03" [color="#64748b"];
+  "P03" -> "P04" [color="#64748b"];
+  "P01" [label="P01 | MALE\nlevels = [1]\nFATHER",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P02" [label="P02 | FEMALE\nlevels = [1]\nMOTHER",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P03" [label="P03 | MALE\nlevels = [0]\nSELF",fillcolor="#1e40af",fontcolor="#ffffff"];
+  "P04" [label="P04 | FEMALE\nlevels = [-1]\nDAUGHTER",fillcolor="#dcfce7",fontcolor="#172b4d"];
+}

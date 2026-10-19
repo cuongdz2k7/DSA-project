@@ -1,0 +1,20 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Ba ví dụ lỗi độc lập — dữ liệu dừng tại validator";
+  "d0" -> "d2" [color="#b91c1c"];
+  "d0" -> "d2" [color="#b91c1c"];
+  "u99" -> "u1" [color="#b91c1c"];
+  "m1" -> "c" [color="#b91c1c"];
+  "m2" -> "c" [color="#b91c1c"];
+  "title0" [label="DUPLICATE_EDGE",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "d0" [label="P00 | MALE",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "d2" [label="P02 | UNKNOWN",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "title1" [label="UNKNOWN_ID",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "u99" [label="P99 — chưa khai báo",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "u1" [label="P01 | MALE",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "title2" [label="SAME_GENDER_PARENTS",fillcolor="#fee2e2",fontcolor="#172b4d"];
+  "m1" [label="P01 | MALE",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "m2" [label="P02 | MALE",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "c" [label="P03 | UNKNOWN",fillcolor="#ffffff",fontcolor="#172b4d"];
+}

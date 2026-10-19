@@ -1,0 +1,422 @@
+{
+  "inputFile": "family_tree_union_edges.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 4,
+        "persons": [
+          {
+            "id": "A",
+            "genderToken": "UNKNOWN",
+            "name": ""
+          },
+          {
+            "id": "B",
+            "genderToken": "UNKNOWN",
+            "name": ""
+          },
+          {
+            "id": "C",
+            "genderToken": "UNKNOWN",
+            "name": ""
+          },
+          {
+            "id": "T",
+            "genderToken": "UNKNOWN",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 6,
+        "edges": [
+          {
+            "parentId": "A",
+            "childId": "B"
+          },
+          {
+            "parentId": "A",
+            "childId": "C"
+          },
+          {
+            "parentId": "A",
+            "childId": "T"
+          },
+          {
+            "parentId": "B",
+            "childId": "C"
+          },
+          {
+            "parentId": "B",
+            "childId": "T"
+          },
+          {
+            "parentId": "C",
+            "childId": "T"
+          }
+        ]
+      },
+      "query": {
+        "type": "FAMILY_TREE",
+        "arguments": [
+          "T",
+          "3",
+          "ANCESTORS"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": true,
+    "data": {
+      "parsedInput": {
+        "graph": {
+          "declaredPersonCount": 4,
+          "persons": [
+            {
+              "id": "A",
+              "genderToken": "UNKNOWN",
+              "name": ""
+            },
+            {
+              "id": "B",
+              "genderToken": "UNKNOWN",
+              "name": ""
+            },
+            {
+              "id": "C",
+              "genderToken": "UNKNOWN",
+              "name": ""
+            },
+            {
+              "id": "T",
+              "genderToken": "UNKNOWN",
+              "name": ""
+            }
+          ],
+          "declaredEdgeCount": 6,
+          "edges": [
+            {
+              "parentId": "A",
+              "childId": "B"
+            },
+            {
+              "parentId": "A",
+              "childId": "C"
+            },
+            {
+              "parentId": "A",
+              "childId": "T"
+            },
+            {
+              "parentId": "B",
+              "childId": "C"
+            },
+            {
+              "parentId": "B",
+              "childId": "T"
+            },
+            {
+              "parentId": "C",
+              "childId": "T"
+            }
+          ]
+        },
+        "query": {
+          "type": "FAMILY_TREE",
+          "arguments": [
+            "T",
+            "3",
+            "ANCESTORS"
+          ]
+        }
+      }
+    },
+    "error": null
+  },
+  "validationResult": {
+    "valid": true,
+    "data": {
+      "graph": {
+        "persons": [
+          {
+            "id": "A",
+            "gender": "UNKNOWN",
+            "name": ""
+          },
+          {
+            "id": "B",
+            "gender": "UNKNOWN",
+            "name": ""
+          },
+          {
+            "id": "C",
+            "gender": "UNKNOWN",
+            "name": ""
+          },
+          {
+            "id": "T",
+            "gender": "UNKNOWN",
+            "name": ""
+          }
+        ],
+        "edges": [
+          {
+            "parentId": "A",
+            "childId": "B"
+          },
+          {
+            "parentId": "A",
+            "childId": "C"
+          },
+          {
+            "parentId": "A",
+            "childId": "T"
+          },
+          {
+            "parentId": "B",
+            "childId": "C"
+          },
+          {
+            "parentId": "B",
+            "childId": "T"
+          },
+          {
+            "parentId": "C",
+            "childId": "T"
+          }
+        ]
+      },
+      "query": {
+        "targetId": "T",
+        "numberOfGenerations": 3,
+        "direction": "ANCESTORS"
+      }
+    },
+    "error": null
+  },
+  "topoResult": {
+    "topoOrder": [
+      "A",
+      "B",
+      "C",
+      "T"
+    ]
+  },
+  "orderedFamilyGraph": {
+    "query": {
+      "targetId": "T",
+      "numberOfGenerations": 3,
+      "direction": "ANCESTORS"
+    },
+    "topoOrder": [
+      "A",
+      "B",
+      "C",
+      "T"
+    ],
+    "nodes": [
+      {
+        "person": {
+          "id": "A",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relationLevels": [
+          1,
+          2
+        ]
+      },
+      {
+        "person": {
+          "id": "B",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relationLevels": [
+          1,
+          2
+        ]
+      },
+      {
+        "person": {
+          "id": "C",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relationLevels": [
+          1
+        ]
+      },
+      {
+        "person": {
+          "id": "T",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relationLevels": [
+          0
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "parentId": "A",
+        "childId": "B"
+      },
+      {
+        "parentId": "A",
+        "childId": "C"
+      },
+      {
+        "parentId": "A",
+        "childId": "T"
+      },
+      {
+        "parentId": "B",
+        "childId": "C"
+      },
+      {
+        "parentId": "B",
+        "childId": "T"
+      },
+      {
+        "parentId": "C",
+        "childId": "T"
+      }
+    ]
+  },
+  "familyTreeResult": {
+    "query": {
+      "targetId": "T",
+      "numberOfGenerations": 3,
+      "direction": "ANCESTORS"
+    },
+    "topoOrder": [
+      "A",
+      "B",
+      "C",
+      "T"
+    ],
+    "persons": [
+      {
+        "person": {
+          "id": "A",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relations": [
+          {
+            "type": "PARENT",
+            "greatDegree": 0
+          },
+          {
+            "type": "GRANDPARENT",
+            "greatDegree": 0
+          }
+        ]
+      },
+      {
+        "person": {
+          "id": "B",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relations": [
+          {
+            "type": "PARENT",
+            "greatDegree": 0
+          },
+          {
+            "type": "GRANDPARENT",
+            "greatDegree": 0
+          }
+        ]
+      },
+      {
+        "person": {
+          "id": "C",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relations": [
+          {
+            "type": "PARENT",
+            "greatDegree": 0
+          }
+        ]
+      },
+      {
+        "person": {
+          "id": "T",
+          "gender": "UNKNOWN",
+          "name": ""
+        },
+        "relations": [
+          {
+            "type": "SELF",
+            "greatDegree": 0
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "parentId": "A",
+        "childId": "B"
+      },
+      {
+        "parentId": "A",
+        "childId": "C"
+      },
+      {
+        "parentId": "A",
+        "childId": "T"
+      },
+      {
+        "parentId": "B",
+        "childId": "C"
+      },
+      {
+        "parentId": "B",
+        "childId": "T"
+      },
+      {
+        "parentId": "C",
+        "childId": "T"
+      }
+    ]
+  },
+  "relationCodesById": {
+    "A": [
+      "PARENT",
+      "GRANDPARENT"
+    ],
+    "B": [
+      "PARENT",
+      "GRANDPARENT"
+    ],
+    "C": [
+      "PARENT"
+    ],
+    "T": [
+      "SELF"
+    ]
+  },
+  "generationOffsetsById": {
+    "A": [
+      1,
+      2
+    ],
+    "B": [
+      1,
+      2
+    ],
+    "C": [
+      1
+    ],
+    "T": [
+      0
+    ]
+  }
+}

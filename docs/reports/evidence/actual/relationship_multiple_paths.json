@@ -1,0 +1,383 @@
+{
+  "inputFile": "relationship_multiple_paths.txt",
+  "parseResult": {
+    "successful": true,
+    "data": {
+      "graph": {
+        "declaredPersonCount": 7,
+        "persons": [
+          {
+            "id": "P00",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P10",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P11",
+            "genderToken": "FEMALE",
+            "name": ""
+          },
+          {
+            "id": "P20",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P21",
+            "genderToken": "FEMALE",
+            "name": ""
+          },
+          {
+            "id": "P01",
+            "genderToken": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "genderToken": "FEMALE",
+            "name": ""
+          }
+        ],
+        "declaredEdgeCount": 8,
+        "edges": [
+          {
+            "parentId": "P00",
+            "childId": "P10"
+          },
+          {
+            "parentId": "P00",
+            "childId": "P11"
+          },
+          {
+            "parentId": "P00",
+            "childId": "P20"
+          },
+          {
+            "parentId": "P00",
+            "childId": "P21"
+          },
+          {
+            "parentId": "P10",
+            "childId": "P01"
+          },
+          {
+            "parentId": "P11",
+            "childId": "P01"
+          },
+          {
+            "parentId": "P20",
+            "childId": "P02"
+          },
+          {
+            "parentId": "P21",
+            "childId": "P02"
+          }
+        ]
+      },
+      "query": {
+        "type": "CHECK_RELATIONSHIP",
+        "arguments": [
+          "P01",
+          "P02"
+        ]
+      }
+    },
+    "error": null
+  },
+  "graphValidationResult": {
+    "valid": true,
+    "data": {
+      "parsedInput": {
+        "graph": {
+          "declaredPersonCount": 7,
+          "persons": [
+            {
+              "id": "P00",
+              "genderToken": "MALE",
+              "name": ""
+            },
+            {
+              "id": "P10",
+              "genderToken": "MALE",
+              "name": ""
+            },
+            {
+              "id": "P11",
+              "genderToken": "FEMALE",
+              "name": ""
+            },
+            {
+              "id": "P20",
+              "genderToken": "MALE",
+              "name": ""
+            },
+            {
+              "id": "P21",
+              "genderToken": "FEMALE",
+              "name": ""
+            },
+            {
+              "id": "P01",
+              "genderToken": "MALE",
+              "name": ""
+            },
+            {
+              "id": "P02",
+              "genderToken": "FEMALE",
+              "name": ""
+            }
+          ],
+          "declaredEdgeCount": 8,
+          "edges": [
+            {
+              "parentId": "P00",
+              "childId": "P10"
+            },
+            {
+              "parentId": "P00",
+              "childId": "P11"
+            },
+            {
+              "parentId": "P00",
+              "childId": "P20"
+            },
+            {
+              "parentId": "P00",
+              "childId": "P21"
+            },
+            {
+              "parentId": "P10",
+              "childId": "P01"
+            },
+            {
+              "parentId": "P11",
+              "childId": "P01"
+            },
+            {
+              "parentId": "P20",
+              "childId": "P02"
+            },
+            {
+              "parentId": "P21",
+              "childId": "P02"
+            }
+          ]
+        },
+        "query": {
+          "type": "CHECK_RELATIONSHIP",
+          "arguments": [
+            "P01",
+            "P02"
+          ]
+        }
+      }
+    },
+    "error": null
+  },
+  "validationResult": {
+    "valid": true,
+    "data": {
+      "graph": {
+        "persons": [
+          {
+            "id": "P00",
+            "gender": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P10",
+            "gender": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P11",
+            "gender": "FEMALE",
+            "name": ""
+          },
+          {
+            "id": "P20",
+            "gender": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P21",
+            "gender": "FEMALE",
+            "name": ""
+          },
+          {
+            "id": "P01",
+            "gender": "MALE",
+            "name": ""
+          },
+          {
+            "id": "P02",
+            "gender": "FEMALE",
+            "name": ""
+          }
+        ],
+        "edges": [
+          {
+            "parentId": "P00",
+            "childId": "P10"
+          },
+          {
+            "parentId": "P00",
+            "childId": "P11"
+          },
+          {
+            "parentId": "P00",
+            "childId": "P20"
+          },
+          {
+            "parentId": "P00",
+            "childId": "P21"
+          },
+          {
+            "parentId": "P10",
+            "childId": "P01"
+          },
+          {
+            "parentId": "P11",
+            "childId": "P01"
+          },
+          {
+            "parentId": "P20",
+            "childId": "P02"
+          },
+          {
+            "parentId": "P21",
+            "childId": "P02"
+          }
+        ]
+      },
+      "query": {
+        "firstPersonId": "P01",
+        "secondPersonId": "P02"
+      }
+    },
+    "error": null
+  },
+  "relationshipResult": {
+    "query": {
+      "firstPersonId": "P01",
+      "secondPersonId": "P02"
+    },
+    "commonAncestorIds": [
+      "P00"
+    ],
+    "paths": [
+      {
+        "sourceId": "P01",
+        "ancestorId": "P00",
+        "nodeIds": [
+          "P01",
+          "P10",
+          "P00"
+        ]
+      },
+      {
+        "sourceId": "P01",
+        "ancestorId": "P00",
+        "nodeIds": [
+          "P01",
+          "P11",
+          "P00"
+        ]
+      },
+      {
+        "sourceId": "P02",
+        "ancestorId": "P00",
+        "nodeIds": [
+          "P02",
+          "P20",
+          "P00"
+        ]
+      },
+      {
+        "sourceId": "P02",
+        "ancestorId": "P00",
+        "nodeIds": [
+          "P02",
+          "P21",
+          "P00"
+        ]
+      }
+    ],
+    "evidencePersons": [
+      {
+        "id": "P00",
+        "gender": "MALE",
+        "name": ""
+      },
+      {
+        "id": "P10",
+        "gender": "MALE",
+        "name": ""
+      },
+      {
+        "id": "P11",
+        "gender": "FEMALE",
+        "name": ""
+      },
+      {
+        "id": "P20",
+        "gender": "MALE",
+        "name": ""
+      },
+      {
+        "id": "P21",
+        "gender": "FEMALE",
+        "name": ""
+      },
+      {
+        "id": "P01",
+        "gender": "MALE",
+        "name": ""
+      },
+      {
+        "id": "P02",
+        "gender": "FEMALE",
+        "name": ""
+      }
+    ],
+    "evidenceEdges": [
+      {
+        "parentId": "P00",
+        "childId": "P10"
+      },
+      {
+        "parentId": "P00",
+        "childId": "P11"
+      },
+      {
+        "parentId": "P00",
+        "childId": "P20"
+      },
+      {
+        "parentId": "P00",
+        "childId": "P21"
+      },
+      {
+        "parentId": "P10",
+        "childId": "P01"
+      },
+      {
+        "parentId": "P11",
+        "childId": "P01"
+      },
+      {
+        "parentId": "P20",
+        "childId": "P02"
+      },
+      {
+        "parentId": "P21",
+        "childId": "P02"
+      }
+    ]
+  },
+  "related": true
+}

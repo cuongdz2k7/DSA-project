@@ -1,0 +1,17 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="P05 / P06 — hai ancestor chung, bốn path";
+  "P01" -> "P03" [color="#2563eb"];
+  "P02" -> "P03" [color="#2563eb"];
+  "P01" -> "P04" [color="#15803d"];
+  "P02" -> "P04" [color="#15803d"];
+  "P03" -> "P05" [color="#2563eb"];
+  "P04" -> "P06" [color="#15803d"];
+  "P01" [label="P01 | MALE\nCOMMON ANCESTOR",fillcolor="#fef3c7",fontcolor="#172b4d"];
+  "P02" [label="P02 | FEMALE\nCOMMON ANCESTOR",fillcolor="#fef3c7",fontcolor="#172b4d"];
+  "P03" [label="P03 | MALE\nVùng source 1",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P04" [label="P04 | FEMALE\nVùng source 2",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "P05" [label="P05 | MALE\nVùng source 1",fillcolor="#dbeafe",fontcolor="#172b4d"];
+  "P06" [label="P06 | FEMALE\nVùng source 2",fillcolor="#dcfce7",fontcolor="#172b4d"];
+}

@@ -1,0 +1,15 @@
+digraph report {
+  graph [rankdir=TB, bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial"];
+  label="Raw text → object đã kiểm tra → domain model";
+  "raw" -> "parse" [color="#64748b"];
+  "parse" -> "validate" [color="#64748b"];
+  "validate" -> "normal" [color="#64748b"];
+  "parse" -> "failure" [color="#b91c1c"];
+  "validate" -> "failure" [color="#b91c1c"];
+  "raw" [label="Raw text",fillcolor="#e0f2fe",fontcolor="#172b4d"];
+  "parse" [label="Parser\nParsedInput",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "validate" [label="Validator\nValidatedInput",fillcolor="#ffffff",fontcolor="#172b4d"];
+  "normal" [label="Normalizer\nNormalizedInput",fillcolor="#dcfce7",fontcolor="#172b4d"];
+  "failure" [label="Failure: data=null\nERROR_CODE + detail + cycle nếu có",fillcolor="#fee2e2",fontcolor="#172b4d"];
+}

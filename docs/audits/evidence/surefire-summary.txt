@@ -1,0 +1,110 @@
+FamilyGraph - Surefire evidence export
+Command actually executed: mvn clean test
+Working directory: C:\Users\Cuong\Desktop\DSA\DSA-project
+Commit: ba9b9c2920fc8621d1ab74e1681d7fa64540bdae
+Observed Maven status: BUILD SUCCESS; command exit code 0
+Observed Maven finish: 2026-10-17T17:32:00+07:00
+Observed Maven total time: 3.968 s (build and tests, not an algorithm benchmark)
+Console also contained Access is denied. before the Maven log; origin not established.
+The per-suite text below is copied verbatim from the generated Surefire TXT files.
+The structured summary below is extracted from the generated Surefire XML files.
+
+SOURCE: target/surefire-reports/com.familygraph.familytree.FamilyTreeBuilderTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.familytree.FamilyTreeBuilderTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.057 s -- in com.familygraph.familytree.FamilyTreeBuilderTest
+
+SOURCE: target/surefire-reports/com.familygraph.familytree.FamilyTreePipelineTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.familytree.FamilyTreePipelineTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in com.familygraph.familytree.FamilyTreePipelineTest
+
+SOURCE: target/surefire-reports/com.familygraph.familytree.LabelFamilyGraphTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.familytree.LabelFamilyGraphTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in com.familygraph.familytree.LabelFamilyGraphTest
+
+SOURCE: target/surefire-reports/com.familygraph.familytree.TopologicalSorterTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.familytree.TopologicalSorterTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.familygraph.familytree.TopologicalSorterTest
+
+SOURCE: target/surefire-reports/com.familygraph.input.InputNormalizerTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.input.InputNormalizerTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.familygraph.input.InputNormalizerTest
+
+SOURCE: target/surefire-reports/com.familygraph.input.InputPipelineModelsTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.input.InputPipelineModelsTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.familygraph.input.InputPipelineModelsTest
+
+SOURCE: target/surefire-reports/com.familygraph.input.ParsedInputValidatorTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.input.ParsedInputValidatorTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.familygraph.input.ParsedInputValidatorTest
+
+SOURCE: target/surefire-reports/com.familygraph.input.RawInputParserTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.input.RawInputParserTest
+-------------------------------------------------------------------------------
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.familygraph.input.RawInputParserTest
+
+SOURCE: target/surefire-reports/com.familygraph.input.RawTextParserTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.input.RawTextParserTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.familygraph.input.RawTextParserTest
+
+SOURCE: target/surefire-reports/com.familygraph.model.FamilyTreeModelsTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.model.FamilyTreeModelsTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.familygraph.model.FamilyTreeModelsTest
+
+SOURCE: target/surefire-reports/com.familygraph.model.GraphAndQueryModelsTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.model.GraphAndQueryModelsTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in com.familygraph.model.GraphAndQueryModelsTest
+
+SOURCE: target/surefire-reports/com.familygraph.model.relationship.RelationshipCheckerTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.model.relationship.RelationshipCheckerTest
+-------------------------------------------------------------------------------
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.081 s -- in com.familygraph.model.relationship.RelationshipCheckerTest
+
+SOURCE: target/surefire-reports/com.familygraph.model.RelationshipModelsTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.model.RelationshipModelsTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.familygraph.model.RelationshipModelsTest
+
+SOURCE: target/surefire-reports/com.familygraph.model.ValidationModelsTest.txt
+-------------------------------------------------------------------------------
+Test set: com.familygraph.model.ValidationModelsTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.familygraph.model.ValidationModelsTest
+
+XML: com.familygraph.familytree.FamilyTreeBuilderTest; tests=4; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.familytree.FamilyTreePipelineTest; tests=1; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.familytree.LabelFamilyGraphTest; tests=1; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.familytree.TopologicalSorterTest; tests=3; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.input.InputNormalizerTest; tests=2; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.input.InputPipelineModelsTest; tests=2; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.input.ParsedInputValidatorTest; tests=6; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.input.RawInputParserTest; tests=18; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.input.RawTextParserTest; tests=4; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.model.FamilyTreeModelsTest; tests=5; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.model.GraphAndQueryModelsTest; tests=3; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.model.relationship.RelationshipCheckerTest; tests=12; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.model.RelationshipModelsTest; tests=3; failures=0; errors=0; skipped=0; java.version=25.0.2
+XML: com.familygraph.model.ValidationModelsTest; tests=3; failures=0; errors=0; skipped=0; java.version=25.0.2
+TOTAL: tests=67; failures=0; errors=0; skipped=0
