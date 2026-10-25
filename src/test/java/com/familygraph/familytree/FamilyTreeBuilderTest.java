@@ -9,6 +9,8 @@ import com.familygraph.model.graph.ParentChildEdge;
 import com.familygraph.model.graph.Person;
 import com.familygraph.model.query.Direction;
 import com.familygraph.model.query.FamilyTreeQuery;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
